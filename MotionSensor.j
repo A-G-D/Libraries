@@ -26,7 +26,7 @@ library MotionSensor /* v1.3
     |==============|
     |  Struct API  |
     |==============|
-
+ 
         struct Sensor
 
             readonly boolean flag                /* Checks if the Sensor instance is registered */
