@@ -8,9 +8,9 @@ library Timer /*
 
     *///! novjass
 
-    Credits:
+    Author: AGD
 
-        - AGD (Author)
+    Credits:
         - Vexorian (For the TimerUtils where I got my inspiration of making my own version of the system)
         - Wieltol (For the nice idea of encapsullating timers)
 
