@@ -60,8 +60,8 @@
 #define __TABLE_ARRAY_H__
 
 
-#include <hashtable_t.h>
-#include <list_t.h>
+#include <hashtable.h>
+#include <linkedlist.h>
 
 
 template <class key_type, class value_type> class Table {
