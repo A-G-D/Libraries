@@ -3,14 +3,15 @@ library Timer /*
 
     */uses /*
 
-    */Initializer /*
+    */Initializer  /*
+    */ErrorMessage /*
 
 
     *///! novjass
 
-    Author: AGD
-
     Credits:
+
+        - AGD (Author)
         - Vexorian (For the TimerUtils where I got my inspiration of making my own version of the system)
         - Wieltol (For the nice idea of encapsullating timers)
 
@@ -20,33 +21,32 @@ library Timer /*
 
         struct Timer/*
 
-          */Timer data  /* the Timer custom data
+          */static Timer new        /* Retrieves a new Timer
+          */static Timer expired    /* Retrieves the expired Timer
+          */Timer data              /* Retrieves the Timer custom data
+          */real timeout            /* Retrieves the Timer timeout
+          */real elapsed            /* Retrieves the Timer elapsed time
+          */real remaining          /* Retrieves the Timer remaining time
 
-          */static method operator new takes nothing returns Timer/*
-                - allocates a new Timer
-
-          */static method newEx takes integer data returns Timer/*
-                - allocates a new Timer with a custom data initialized
+          */static method operator [] takes integer data returns Timer/*
+                - Retrives a new Timer with a custom data initialized
                   to <data>
 
-          */static method operator expired takes nothing returns Timer/*
-                - gets the expiring Timer
-
           */method start takes real timeout, boolean periodic, code handlerFunction returns nothing/*
-                - starts a Timer instance, running <handlerFunction> after <timeout> seconds periodically
+                - Starts a Timer instance, running <handlerFunction> after <timeout> seconds periodically
                   or not depending on the <periodic> boolean value
 
-          */method free takes nothing returns nothing/*
-                - frees and stops a Timer instance
+          */method free takes nothing returns Timer/*
+                - Frees and stops a Timer instance and returns the Timer data
 
           */method stop takes nothing returns nothing/*
-                - stops a Timer instance
+                - Stops a Timer instance
 
           */method pause takes nothing returns nothing/*
-                - pauses a Timer instance
+                - Pauses a Timer instance
 
           */method resume takes nothing returns nothing/*
-                - resumes a Timer instance
+                - Resumes a Timer instance
 
     *///! endnovjass
 
@@ -65,69 +65,59 @@ library Timer /*
         private thistype recycler
         thistype data
 
-        debug private static method debug takes string msg returns nothing
-            debug call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, 60, "|CFFFFCC00[Timer]|R " + msg)
-        debug endmethod
-
         static method operator new takes nothing returns thistype
-            debug if thistype(0).recycler == 0 then
-                debug call debug("|CFFFF0000ERROR: Attempt to allocate more than " + I2S(MAX_TIMER_COUNT) + " instances|R")
-                debug return 0
-            debug endif
+            debug call ThrowError(thistype(0).recycler == 0, "Timer", "new", "thistype", 0, "Attempted to allocate more than " + I2S(MAX_TIMER_COUNT) + " Timer instances")
             set alloc = thistype(0).recycler
             set thistype(0).recycler = alloc.recycler
             debug set alloc.recycler = -1
-            debug call debug("Allocating Timer [" + I2S(alloc) + "]")
             return alloc
         endmethod
 
-        static method newEx takes integer data returns thistype
+        static method operator [] takes integer data returns thistype
             set new.data = data
             return alloc
         endmethod
 
-        method free takes nothing returns nothing
-            debug if .recycler != -1 then
-                debug call debug("|CFFFF0000ERROR: Attempt to double free Timer [" + I2S(this) + "]|R")
-                debug return
-            debug endif
-            set .recycler = thistype(0).recycler
+        method free takes nothing returns thistype
+            local thistype data = this.data
+            debug call ThrowError(this.recycler != -1, "Timer", "free()", "thistype", this, "Attempted to double free Timer")
+            set this.recycler = thistype(0).recycler
             set thistype(0).recycler = this
-            call PauseTimer(.timers)
-            set .data = 0
-            debug call debug("Freeing Timer [" + I2S(this) + "]")
+            call PauseTimer(this.timers)
+            set this.data = 0
+            return data
         endmethod
 
         method start takes real timeout, boolean periodic, code c returns nothing
-            debug if .recycler != -1 then
-                debug call debug("|CFFFF0000ERROR: Attempt to start freed Timer [" + I2S(this) + "]|R")
-                debug return
-            debug endif
-            call TimerStart(.timers, timeout, periodic, c)
+            debug call ThrowError(this.recycler != -1, "Timer", "start()", "thistype", this, "Attempted to start freed Timer")
+            call TimerStart(this.timers, timeout, periodic, c)
         endmethod
 
         method stop takes nothing returns nothing
-            debug if .recycler != -1 then
-                debug call debug("|CFFFF0000ERROR: Attempt to stop freed Timer [" + I2S(this) + "]|R")
-                debug return
-            debug endif
-            call TimerStart(.timers, 0, false, null)
+            debug call ThrowError(this.recycler != -1, "Timer", "stop()", "thistype", this, "Attempted to stop freed Timer")
+            call TimerStart(this.timers, 0, false, null)
         endmethod
 
         method pause takes nothing returns nothing
-            debug if .recycler != -1 then
-                debug call debug("|CFFFF0000ERROR: Attempt to pause freed Timer [" + I2S(this) + "]|R")
-                debug return
-            debug endif
-            call PauseTimer(.timers)
+            debug call ThrowError(this.recycler != -1, "Timer", "pause()", "thistype", this, "Attempted to pause freed Timer")
+            call PauseTimer(this.timers)
         endmethod
 
         method resume takes nothing returns nothing
-            debug if .recycler != -1 then
-                debug call debug("|CFFFF0000ERROR: Attempt to resume freed Timer [" + I2S(this) + "]|R")
-                debug return
-            debug endif
-            call ResumeTimer(.timers)
+            debug call ThrowError(this.recycler != -1, "Timer", "resume()", "thistype", this, "Attempted to resume free Timer")
+            call ResumeTimer(this.timers)
+        endmethod
+
+        method operator elapsed takes nothing returns real
+            return TimerGetElapsed(this.timers)
+        endmethod
+
+        method operator remaining takes nothing returns real
+            return TimerGetRemaining(this.timers)
+        endmethod
+
+        method operator timeout takes nothing returns real
+            return TimerGetTimeout(this.timers)
         endmethod
 
         static method operator expired takes nothing returns thistype
@@ -135,7 +125,7 @@ library Timer /*
         endmethod
 
         private static method init takes nothing returns nothing
-            local thistype this = thistype(1)
+            set alloc = thistype(1)
             set MAX_TIMER_COUNT = IMinBJ(8190, MAX_TIMER_COUNT)
             set thistype(1).timers = CreateTimer()
             set startHandle = GetHandleId(thistype(1).timers) - 1
@@ -143,14 +133,13 @@ library Timer /*
             set thistype(1).recycler = 2
             set thistype(MAX_TIMER_COUNT).recycler = 0
             loop
-                set this = this + 1
-                set .timers = CreateTimer()
-                exitwhen this == MAX_TIMER_COUNT
-                set .recycler = this + 1
+                set alloc = alloc + 1
+                set alloc.timers = CreateTimer()
+                exitwhen alloc == MAX_TIMER_COUNT
+                set alloc.recycler = alloc + 1
             endloop
-            debug call debug("TimerStruct ready! (" + I2S(this) + " Timers available in stock)")
+            debug call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, 10, "|CFFFFCC00[Timer] : |RTimerStruct ready! (" + I2S(alloc) + " Timers available in stock)")
         endmethod
-
         implement Initializer
 
     endstruct
