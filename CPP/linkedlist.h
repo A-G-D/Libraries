@@ -174,7 +174,7 @@
 *				- Checks the equality of two nodes
 *
 *******************************************************************************/
-#ifndef __LINKEDLIST H__
+#ifndef __LINKEDLIST_H__
 #define __LINKEDLIST_H__
 
 
