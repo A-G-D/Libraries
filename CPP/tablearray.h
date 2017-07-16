@@ -50,7 +50,7 @@
 *	| Example |
 *	|---------|
 *
-*		Table4D<int, std::string> tablearray;
+*		Table4D<int, std::string> tablearray(Hasher::integer);
 *		tablearray[100][200][5][0x2000] = "String";
 *		std::cout<<tablearray[100][200][5][0x2000]<<"\n";	(Dislays "String")
 *
