@@ -1,6 +1,6 @@
-/******************************************************************************* 
+/*******************************************************************************
 *
-*	tablearray.h
+*	tablearray.hpp
 *
 *
 *	|-----|
@@ -50,24 +50,24 @@
 *	| Example |
 *	|---------|
 *
-*		Table4D<int, std::string> tablearray(Hasher::integer);
+*		Table4D<int, std::string> tablearray;
 *		tablearray[100][200][5][0x2000] = "String";
 *		std::cout<<tablearray[100][200][5][0x2000]<<"\n";	(Dislays "String")
 *
 *
 *******************************************************************************/
-#ifndef __TABLE_ARRAY_H__
-#define __TABLE_ARRAY_H__
+#ifndef __TABLE_ARRAY_HPP__
+#define __TABLE_ARRAY_HPP__
 
 
-#include <hashtable.h>
-#include <linkedlist.h>
+#include <hashtable.hpp>
+#include <linkedlist.hpp>
 
 
 template <class key_type, class value_type> class Table {
 
 
-	template <class, class> friend class AVLNode;
+	template <class, class> friend class AVL;
 
 	typedef Table<key_type, value_type> thistype;
 
@@ -120,7 +120,7 @@ public:
 template <class key_type, class value_type> class NAME {													\
 																											\
 																											\
-	template <class, class> friend class AVLNode;															\
+	template <class, class> friend class AVL;																\
 																											\
 	typedef NAME<key_type, value_type> thistype;															\
 	typedef SUBCLASS<key_type, value_type> subclass;														\
@@ -152,7 +152,7 @@ public:																										\
 	}																										\
 																											\
 	bool empty() {																							\
-		for(Node<key_type> node = this->list.first(); node != this->list.head(); ++node)					\
+		for(typename List<key_type>::Node node = this->list.first(); node != this->list.head(); ++node)		\
 			if(!this->hashtable.load(node.data()).empty())													\
 				return false;																				\
 		return true;																						\
@@ -168,7 +168,7 @@ public:																										\
 	}																										\
 																											\
 	void clear() {																							\
-		for(Node<key_type> node = this->list.first(); node != this->list.head(); ++node)					\
+		for(typename List<key_type>::Node node = this->list.first(); node != this->list.head(); ++node)		\
 			this->hashtable.load(node.data()).clear();														\
 		this->hashtable.clear();																			\
 		this->list.clear();																					\
