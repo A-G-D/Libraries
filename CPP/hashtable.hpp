@@ -1,6 +1,6 @@
 /*******************************************************************************
 *
-*	hashtable.h
+*	hashtable.hpp
 *
 *
 *	Hash Table library
@@ -82,11 +82,11 @@
 *
 *
 *******************************************************************************/
-#ifndef __HASHTABLE_H__
-#define __HASHTABLE_H__
+#ifndef __HASHTABLE_HPP__
+#define __HASHTABLE_HPP__
 
 
-#include <avl.h>
+#include <avl.hpp>
 #include <string>
 
 
@@ -97,7 +97,6 @@ template <class key_type, class value_type> class HashTable {
 	typedef AVL<key_type, value_type> container;
 
 	template <class, class> friend class AVL;
-	template <class, class> friend class AVLNode;
 
 	container *tree;
 	unsigned int buckets;
@@ -147,7 +146,7 @@ public:
 		this->buckets = table.buckets;
 		this->hasher = table.hasher;
 		this->tree = new container[this->buckets];
-		for(int i = 0; i < this->buckets; this->tree[i] += table.tree[i++]);
+		for(int i = 0; i < this->buckets; this->tree[i++] += table.tree[i]);
 		return *this;
 	}
 
@@ -176,7 +175,7 @@ public:
 		this->buckets = table.buckets;
 		this->tree = new container[this->buckets];
 		this->hasher = table.hasher;
-		for(int i = 0; i < this->buckets; this->tree[i] += table.tree[i++]);
+		for(int i = 0; i < this->buckets; this->tree[i++] += table.tree[i]);
 	}
 	HashTable(unsigned int (*hash_function)(const key_type&, unsigned int), unsigned int bucket_count) {
 		this->tree = new container[bucket_count];
@@ -204,6 +203,11 @@ class Hasher {
 
 public:
 
+	static unsigned int character(const char &key, unsigned int bucket_count) {
+		if(key < 0)
+			return -key%bucket_count;
+		return key%bucket_count;
+	}
 	static unsigned int short_integer(const short &key, unsigned int bucket_count) {
 		if(key < 0)
 			return -key%bucket_count;
@@ -225,6 +229,9 @@ public:
 		return key%bucket_count;
 	}
 
+	inline static unsigned int unsigned_character(const unsigned char &key, unsigned int bucket_count) {
+		return key%bucket_count;
+	}
 	inline static unsigned int unsigned_short_integer(const unsigned short &key, unsigned int bucket_count) {
 		return key%bucket_count;
 	}
