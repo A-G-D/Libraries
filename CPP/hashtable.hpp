@@ -68,15 +68,17 @@
 *
 *			- Provides pre-made hash functions
 *
-*			static unsigned int short_integer(const short key&, unsigned int bucket_count)
-*			static unsigned int integer(const int key&, unsigned int bucket_count)
-*			static unsigned int long_integer(const long key&, unsigned int bucket_count)
-*			static unsigned int long_long_integer(const long long key&, unsigned int bucket_count)
+*			static unsigned int character(const char &key, unsigned int bucket_count)
+*			static unsigned int short_integer(const short &key, unsigned int bucket_count)
+*			static unsigned int integer(const int &key, unsigned int bucket_count)
+*			static unsigned int long_integer(const long &key, unsigned int bucket_count)
+*			static unsigned int long_long_integer(const long long &key, unsigned int bucket_count)
 *
-*			static unsigned int unsigned_short_integer(const unsigned short key&, unsigned int bucket_count)
-*			static unsigned int unsigned_integer(const unsigned int key&, unsigned int bucket_count)
-*			static unsigned int unsigned_long_integer(const unsigned long key&, unsigned int bucket_count)
-*			static unsigned int unsigned_long_long_integer(const unsigned long long key&, unsigned int bucket_count)
+*			static unsigned int unsigned_character(const unsigned char &key, unsigned int bucket_count)
+*			static unsigned int unsigned_short_integer(const unsigned short &key, unsigned int bucket_count)
+*			static unsigned int unsigned_integer(const unsigned int &key, unsigned int bucket_count)
+*			static unsigned int unsigned_long_integer(const unsigned long &key, unsigned int bucket_count)
+*			static unsigned int unsigned_long_long_integer(const unsigned long long &key, unsigned int bucket_count)
 *
 *			static unsigned int string(const std::string key&, unsigned int bucket_count)
 *
