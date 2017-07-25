@@ -14,10 +14,14 @@
 *
 *		class List<type>
 *
+*		Constructors:
+*
 *			List()
 *				- Default constructor
 *			List(const List<type> &list)
 *				- Copy constructor
+*
+*		Methods:
 *
 *			List<type>::Node first()
 *				- Front element of the list
@@ -33,19 +37,19 @@
 *			bool empty()
 *				- Checks if the list is empty or not
 *
-*			List<type>::Node push(type value)
+*			List<type>::Node push(const type &value)
 *				- Adds a new element to the front of the list and returns a new
 *				  node correspoding to the added element
-*			List<type>::Node push(List<type> &list)
+*			List<type>::Node push(const List<type> &list)
 *				- Transfers all the elements from the input list to the front of
 *				  this list and returns the first element of the input list
 *			type pop()
 *				- Removes the front element of the list and returns its value
 *
-*			List<type>::Node enqueue(type value)
+*			List<type>::Node enqueue(const type &value)
 *				- Adds a new element to the back of the list and returns a new
 *				  node corresponding to the added element
-*			List<type>::Node enqueue(List<type> &list)
+*			List<type>::Node enqueue(const List<type> &list)
 *				- Transfers all the elements from the input list to the back of
 *				  this list and returns the first element of the input list
 *			type eject()
@@ -76,14 +80,14 @@
 *			void randomize()
 *				- Randomizes the order of the elements of the list
 *
-*			void sort(bool (*handler)(type, type))
+*			void sort(bool (*handler)(const type&, const type&))
 *				- Sorts the order of the elements based on the boolean expression
 *				  of the callback function
 *
-*			void traverse(void (*callback)(List<type>::Node), bool clockwise)
+*			void traverse(void (*callback)(const List<type>::Node&), bool clockwise)
 *				- Runs the callback function for every node on the list
 *				- The boolean parameter determines the direction of traversal
-*			void traverse(bool (*handler)(List<type>::Node), bool clockwise)
+*			void traverse(bool (*handler)(const List<type>::Node&), bool clockwise)
 *				- Cycles through the list while running the handler function for
 *				  each node it traverses
 *				- The cycling only stops when the handler function returns false
@@ -99,33 +103,37 @@
 *			type operator[](int index)
 *				- Returns the element found in a certain position in the list
 *
-*			List<type>& operator=(List<type> &list)
+*			List<type>& operator=(const List<type> &list)
 *				- Copies the properties of the input list into this list
 *
-*			List<type>& operator+(type data)
+*			List<type>& operator+(const type &data)
 *				- Returns a new list composed of this list's elements plus the
 *				  input data
-*			List<type>& operator+(List<type> list)
+*			List<type>& operator+(const List<type> &list)
 *				- Returns the sum of this list and the input list as a new list
 *
-*			List<type>& operator+=(type data)
+*			List<type>& operator+=(const type &data)
 *				- Enqueues a new element to the list
-*			List<type>& operator+=(List<type> list)
+*			List<type>& operator+=(const List<type> &list)
 *				- Enqueues the input list into this list
 *
-*			bool operator==(List<type> &list)
-*			bool operator!=(List<type> &list)
-*			bool operator<(List<type> &list)
-*			bool operator>(List<type> &list)
-*			bool operator<=(List<type> &list)
-*			bool operator>=(List<type> &list)
+*			bool operator==(const List<type> &list)
+*			bool operator!=(const List<type> &list)
+*			bool operator<=(const List<type> &list)
+*			bool operator>=(const List<type> &list)
+*			bool operator<(const List<type> &list)
+*			bool operator>(const List<type> &list)
 *				- Compares the sizes of two lists
 *
 *
 *		class List<type>::Node
 *
+*		Constructors:
+*
 *			List<type>::Node(List<type>::Node *node)
 *				- Constructs a node based on node pointer argument
+*
+*		Methods:
 *
 *			static List<type>::Node& null()
 *				- NULL node (constant)
@@ -137,18 +145,18 @@
 *			List<type>::Node next()
 *				- The previous/next node of this node
 *
-*			List<type>::Node insert(type value)
+*			List<type>::Node insert(const type &value)
 *				- Appends a new element next to this node
-*			List<type>::Node insert(List<type> &list)
+*			List<type>::Node insert(const List<type> &list)
 *				- Appends all the elements of the input list next to this node
 *				- Elements of the input list are not copied but transfered
 *			type remove()
 *				- Removes this node from its list and returns its value
 *
-*			void swap(List<type>::Node &node)
+*			void swap(const List<type>::Node &node)
 *				- Swaps the position of two nodes
 *
-*			void move(List<type>::Node &node)
+*			void move(const List<type>::Node &node)
 *				- Moves this node next to the input node
 *
 *			void move_left()
@@ -161,16 +169,16 @@
 *				- Moves this node clockwise/counter-clockwise by a certain number
 *				  of bits
 *
-*			List<type>::Node operator++()
+*			List<type>::Node& operator++()
 *			List<type>::Node operator++(int)
 *				- Moves on to the next node
 *
-*			List<type>::Node operator--()
+*			List<type>::Node& operator--()
 *			List<type>::Node operator--(int)
 *				- Moves on to the previous node
 *
-*			bool operator==(List<type>::Node &node)
-*			bool operator!=(List<type>::Node &node)
+*			bool operator==(const List<type>::Node &node)
+*			bool operator!=(const List<type>::Node &node)
 *				- Checks the equality of two nodes
 *
 *******************************************************************************/
@@ -557,7 +565,7 @@ public:
 		}
 	}
 
-	void sort(bool (*handler)(T, T)) const {
+	void sort(bool (*handler)(const T&, const T&)) const {
 		List<T> a, b;
 		a.enqueue(*this);
 		b = a.split_back();
