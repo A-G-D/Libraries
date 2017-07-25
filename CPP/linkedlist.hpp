@@ -691,7 +691,7 @@ private:
 
 public:
 
-    inline List() {
+	inline List() {
 		this->init();
 	}
 	List(const List<T> &list) {
