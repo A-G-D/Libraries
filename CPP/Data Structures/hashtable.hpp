@@ -18,7 +18,8 @@
 *
 *		class HashTable<key_type, value_type>
 *
-*			- 'key_type' must be a data type with working relational operators
+*			- 'key_type' must have working relational operators
+*			- 'value_type' must have a default constructor
 *
 *		Constructors:
 *
@@ -55,32 +56,32 @@
 *				- Overwrites the data of this HashTable with the data of another
 *				  HashTable
 *
-*			bool operator==(HashTable<key_type, value_type> &table)
-*			bool operator!=(HashTable<key_type, value_type> &table)
-*			bool operator<=(HashTable<key_type, value_type> &table)
-*			bool operator>=(HashTable<key_type, value_type> &table)
-*			bool operator<(HashTable<key_type, value_type> &table)
-*			bool operator>(HashTable<key_type, value_type> &table)
+*			bool operator==(const HashTable<key_type, value_type> &table)
+*			bool operator!=(const HashTable<key_type, value_type> &table)
+*			bool operator<=(const HashTable<key_type, value_type> &table)
+*			bool operator>=(const HashTable<key_type, value_type> &table)
+*			bool operator<(const HashTable<key_type, value_type> &table)
+*			bool operator>(const HashTable<key_type, value_type> &table)
 *				- Compares the size of two HashTables
 *
 *
-*		class Hasher
+*		namespace Hasher
 *
 *			- Provides pre-made hash functions
 *
-*			static unsigned int character(const char &key, unsigned int bucket_count)
-*			static unsigned int short_integer(const short &key, unsigned int bucket_count)
-*			static unsigned int integer(const int &key, unsigned int bucket_count)
-*			static unsigned int long_integer(const long &key, unsigned int bucket_count)
-*			static unsigned int long_long_integer(const long long &key, unsigned int bucket_count)
+*			unsigned int character(const char &key, unsigned int bucket_count)
+*			unsigned int short_integer(const short &key, unsigned int bucket_count)
+*			unsigned int integer(const int &key, unsigned int bucket_count)
+*			unsigned int long_integer(const long &key, unsigned int bucket_count)
+*			unsigned int long_long_integer(const long long &key, unsigned int bucket_count)
 *
-*			static unsigned int unsigned_character(const unsigned char &key, unsigned int bucket_count)
-*			static unsigned int unsigned_short_integer(const unsigned short &key, unsigned int bucket_count)
-*			static unsigned int unsigned_integer(const unsigned int &key, unsigned int bucket_count)
-*			static unsigned int unsigned_long_integer(const unsigned long &key, unsigned int bucket_count)
-*			static unsigned int unsigned_long_long_integer(const unsigned long long &key, unsigned int bucket_count)
+*			unsigned int unsigned_character(const unsigned char &key, unsigned int bucket_count)
+*			unsigned int unsigned_short_integer(const unsigned short &key, unsigned int bucket_count)
+*			unsigned int unsigned_integer(const unsigned int &key, unsigned int bucket_count)
+*			unsigned int unsigned_long_integer(const unsigned long &key, unsigned int bucket_count)
+*			unsigned int unsigned_long_long_integer(const unsigned long long &key, unsigned int bucket_count)
 *
-*			static unsigned int string(const std::string key&, unsigned int bucket_count)
+*			unsigned int string(const std::string key&, unsigned int bucket_count)
 *
 *
 *******************************************************************************/
@@ -104,9 +105,8 @@ template <class key_type, class value_type> class HashTable {
 	unsigned int buckets;
 	unsigned int (*hasher)(const key_type&, unsigned int);
 
-	inline HashTable() : buckets(1) {
-		this->tree = new container[1];
-	}
+	inline HashTable()
+	: buckets(1), tree(new container[1]) {}
 
 public:
 
@@ -116,7 +116,7 @@ public:
 		return count;
 	}
 
-	bool empty() {
+	bool empty() const {
 		for(int i = 0; i < this->buckets; ++i)
 			if(!this->tree[i].empty())
 				return false;
@@ -173,22 +173,17 @@ public:
 		return this->size() >= table.size();
 	}
 
-	HashTable(const thistype &table) {
-		this->buckets = table.buckets;
-		this->tree = new container[this->buckets];
-		this->hasher = table.hasher;
+	inline HashTable(const thistype &table)
+	: buckets(table.buckets), tree(new container[table.buckets]), hasher(table.hasher) {
 		for(int i = 0; i < this->buckets; this->tree[i++] += table.tree[i]);
 	}
-	HashTable(unsigned int (*hash_function)(const key_type&, unsigned int), unsigned int bucket_count) {
-		this->tree = new container[bucket_count];
-		this->buckets = bucket_count;
-		this->hasher = hash_function;
-	}
-	HashTable(unsigned int (*hash_function)(const key_type&, unsigned int)) {
-		this->tree = new container[0x100];
-		this->buckets = 0x100;
-		this->hasher = hash_function;
-	}
+
+	inline HashTable(unsigned int (*hash_function)(const key_type&, unsigned int), unsigned int bucket_count)
+	: tree(new container[bucket_count]), buckets(bucket_count), hasher(hash_function) {}
+
+	inline HashTable(unsigned int (*hash_function)(const key_type&, unsigned int))
+	: tree(new container[0x100]), buckets(0x100), hasher(hash_function) {}
+
 	inline ~HashTable() {
 		delete[] this->tree;
 	}
@@ -197,57 +192,52 @@ public:
 };
 
 
-class Hasher {
+namespace Hasher {
 
 
-	Hasher() {}
-	~Hasher() {}
-
-public:
-
-	static unsigned int character(const char &key, unsigned int bucket_count) {
+	unsigned int character(const char &key, unsigned int bucket_count) {
 		if(key < 0)
 			return -key%bucket_count;
 		return key%bucket_count;
 	}
-	static unsigned int short_integer(const short &key, unsigned int bucket_count) {
+	unsigned int short_integer(const short &key, unsigned int bucket_count) {
 		if(key < 0)
 			return -key%bucket_count;
 		return key%bucket_count;
 	}
-	static unsigned int integer(const int &key, unsigned int bucket_count) {
+	unsigned int integer(const int &key, unsigned int bucket_count) {
 		if(key < 0)
 			return -key%bucket_count;
 		return key%bucket_count;
 	}
-	static unsigned int long_integer(const long &key, unsigned int bucket_count) {
+	unsigned int long_integer(const long &key, unsigned int bucket_count) {
 		if(key < 0)
 			return -key%bucket_count;
 		return key%bucket_count;
 	}
-	static unsigned int long_long_integer(const long long &key, unsigned int bucket_count) {
+	unsigned int long_long_integer(const long long &key, unsigned int bucket_count) {
 		if(key < 0)
 			return -key%bucket_count;
 		return key%bucket_count;
 	}
 
-	inline static unsigned int unsigned_character(const unsigned char &key, unsigned int bucket_count) {
+	inline unsigned int unsigned_character(const unsigned char &key, unsigned int bucket_count) {
 		return key%bucket_count;
 	}
-	inline static unsigned int unsigned_short_integer(const unsigned short &key, unsigned int bucket_count) {
+	inline unsigned int unsigned_short_integer(const unsigned short &key, unsigned int bucket_count) {
 		return key%bucket_count;
 	}
-	inline static unsigned int unsigned_integer(const unsigned int &key, unsigned int bucket_count) {
+	inline unsigned int unsigned_integer(const unsigned int &key, unsigned int bucket_count) {
 		return key%bucket_count;
 	}
-	inline static unsigned int unsigned_long_integer(const unsigned long &key, unsigned int bucket_count) {
+	inline unsigned int unsigned_long_integer(const unsigned long &key, unsigned int bucket_count) {
 		return key%bucket_count;
 	}
-	inline static unsigned int unsigned_long_long_integer(const unsigned long long &key, unsigned int bucket_count) {
+	inline unsigned int unsigned_long_long_integer(const unsigned long long &key, unsigned int bucket_count) {
 		return key%bucket_count;
 	}
 
-	static unsigned int string(const std::string &key, unsigned int bucket_count) {
+	unsigned int string(const std::string &key, unsigned int bucket_count) {
 		long long int_key = 0;
 		for(int i = 0; i < key.length(); int_key += key[i]*i++);
 		return integer(int_key, bucket_count);
