@@ -1,0 +1,105 @@
+|------------------------------------------------------|
+|          CHARACTER TRANSLATION DEFINITION            |
+|------------------------------------------------------|
+
+Here you can define your own translation for the following characters. That means, you can 
+actually use the program for translating codes other than morse. The instructions are given
+below =).
+
+* To add a new character translation, use this syntax: "@WhichCharacter {Translation}".
+* The whitespace chatacters between "WhichCharacter" and "{" are ignored.
+* You can also change the following default translation values below.
+* You MUST define a special character known as "MorseLetterSeparator". This must be a single character and must not be used as a morse character. The syntax to declare the character is "#MorseLetterSeparator = 'SingleCharacter'".
+* The program will automatically use the internal hardcoded morse code translation if atleast one of the following conditions is met:
+	1. If this file is not found by the program
+	2. If no translation is defined inside this file
+	3. If "MorseLetterSeparator" is not declared or is invalid
+	4. If "MorseLetterSeparator" is used again as a morse character
+
+--------------------------------------------------------
+
+#MorseLetterSeparator = ' '
+
+
+Char	Translation
+
+@a      {.-}
+@b      {-...}
+@c      {-.-.}
+@d      {-..}
+@e      {.}
+@f      {..-.}
+@g      {--.}
+@h      {....}
+@i      {..}
+@j      {.---}
+@k      {-.-}
+@l      {.-..}
+@m      {--}
+@n      {-.}
+@o      {---}
+@p      {.--.}
+@q      {--.-}
+@r      {.-.}
+@s      {...}
+@t      {-}
+@u      {..-}
+@v      {...-}
+@w      {.--}
+@x      {-..-}
+@y      {-.--}
+@z      {--..}
+
+@A      {.-}
+@B      {-...}
+@C      {-.-.}
+@D      {-..}
+@E      {.}
+@F      {..-.}
+@G      {--.}
+@H      {....}
+@I      {..}
+@J      {.---}
+@K      {-.-}
+@L      {.-..}
+@M      {--}
+@N      {-.}
+@O      {---}
+@P      {.--.}
+@Q      {--.-}
+@R      {.-.}
+@S      {...}
+@T      {-}
+@U      {..-}
+@V      {...-}
+@W      {.--}
+@X      {-..-}
+@Y      {-.--}
+@Z      {--..}
+
+@0      {-----}
+@1      {.----}
+@2      {..---}
+@3      {...--}
+@4      {....-}
+@5      {.....}
+@6      {-....}
+@7      {--...}
+@8      {---..}
+@9      {----.}
+
+@.      {.-.-.-}
+@,      {--..--}
+@:      {---...}
+@?      {..--..}
+@'      {.----.}
+@-      {-....-}
+@/      {-..-.}
+@(      {-.--.-}
+@"      {.-..-.}
+@@      {.--.-.}
+@=      {-...-}
+@       {/}
+@
+        {
+}
