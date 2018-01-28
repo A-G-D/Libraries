@@ -3,8 +3,8 @@ library ItemCharges /*
 
     */uses /*
 
-    */PlayerUnitEvent   /*
-    */Initializer       /*
+    */RegisterPlayerUnitEvent   /*
+    */Initializer               /*
 
     */
     function IsItemCharged takes item whichItem returns boolean
@@ -37,7 +37,7 @@ library ItemCharges /*
     endfunction
 
     //! runtextmacro INITIALIZER()
-    call RegisterAnyPlayerUnitEvent(EVENT_PLAYER_UNIT_PICKUP_ITEM, function OnItemAcquire)
+    call RegisterPlayerUnitEvent(EVENT_PLAYER_UNIT_PICKUP_ITEM, function OnItemAcquire)
     //! runtextmacro END_INITIALIZER()
 
 
