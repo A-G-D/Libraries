@@ -1,14 +1,17 @@
-library MapBounds uses Initializer
+library MapBounds /* v1.0.0
 
 
-    //! novjass
+    Author: AGD
+    Based on Nestharus's WorldBounds
+
+    *///! novjass
 
     |=====|
     | API |
     |=====|
 
-        struct MapBounds extends array
-        struct WorldBounds extends array
+        struct MapBounds extends array      // Refers to initial playable map bounds
+        struct WorldBounds extends array    // Refers to world bounds
 
             readonly static real centerX
             readonly static real centerY
@@ -19,10 +22,11 @@ library MapBounds uses Initializer
             readonly static rect rect
             readonly static region region
 
+            static method getArea takes nothing returns real
+
             static method getBoundedX takes real x returns real
             static method getBoundedY takes real y returns real/*
                 - Returns a coordinate that is inside the bounds
-
           */static method containsX takes real x returns boolean
             static method containsY takes real y returns boolean/*
                 - Checks if the bound contains the input coordinate
@@ -30,7 +34,20 @@ library MapBounds uses Initializer
 
     //! endnovjass
 
-    private module Methods
+    private module CommonMembers
+        readonly static real centerX
+        readonly static real centerY
+        readonly static real minX
+        readonly static real minY
+        readonly static real maxX
+        readonly static real maxY
+        readonly static rect rect
+        readonly static region region
+
+        static method getArea takes nothing returns real
+            return (maxX - minX)*(maxY - minY)
+        endmethod
+
         static method getBoundedX takes real x returns real
             if x < minX then
                 return minX
@@ -54,62 +71,32 @@ library MapBounds uses Initializer
         static method containsY takes real y returns boolean
             return getBoundedY(y) == y
         endmethod
+
+        private static method onInit takes nothing returns nothing
+            set region = CreateRegion()
+            set rect = getRect()
+            set minX = GetRectMinX(rect)
+            set minY = GetRectMinY(rect)
+            set maxX = GetRectMaxX(rect)
+            set maxY = GetRectMaxY(rect)
+            set centerX = (minX + maxX)/2.00
+            set centerY = (minY + maxY)/2.00
+            call RegionAddRect(region, rect)
+        endmethod
     endmodule
 
     struct MapBounds extends array
-
-        readonly static real centerX
-        readonly static real centerY
-        readonly static real minX
-        readonly static real minY
-        readonly static real maxX
-        readonly static real maxY
-        readonly static rect rect
-        readonly static region region
-
-        implement Methods
-
-        private static method init takes nothing returns nothing
-            set region = CreateRegion()
-            set rect = bj_mapInitialPlayableArea
-            set minX = GetRectMinX(rect)
-            set minY = GetRectMinY(rect)
-            set maxX = GetRectMaxX(rect)
-            set maxY = GetRectMaxY(rect)
-            set centerX = (minX + maxX)/2.00
-            set centerY = (minY + maxY)/2.00
-            call RegionAddRect(region, rect)
+        private static method getRect takes nothing returns rect
+            return bj_mapInitialPlayableArea
         endmethod
-        implement Initializer
-
+        implement CommonMembers
     endstruct
 
     struct WorldBounds extends array
-
-        readonly static real centerX
-        readonly static real centerY
-        readonly static real minX
-        readonly static real minY
-        readonly static real maxX
-        readonly static real maxY
-        readonly static rect rect
-        readonly static region region
-
-        implement Methods
-
-        private static method init takes nothing returns nothing
-            set region = CreateRegion()
-            set rect = GetWorldBounds()
-            set minX = GetRectMinX(rect)
-            set minY = GetRectMinY(rect)
-            set maxX = GetRectMaxX(rect)
-            set maxY = GetRectMaxY(rect)
-            set centerX = (minX + maxX)/2.00
-            set centerY = (minY + maxY)/2.00
-            call RegionAddRect(region, rect)
+        private static method getRect takes nothing returns rect
+            return GetWorldBounds()
         endmethod
-        implement Initializer
-
+        implement CommonMembers
     endstruct
 
 
