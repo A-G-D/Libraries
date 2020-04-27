@@ -1,4 +1,4 @@
-library AllocList /*
+library AllocList /* Depreciated, use Alloc + LinkedList instead
 
 
     */uses /*
