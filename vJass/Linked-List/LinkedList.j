@@ -433,7 +433,9 @@ library LinkedList /* v1.0.0
             debug call AssertError(this.next.prev != this, "destroy()", "thistype", this, "Invalid list")
             debug call AssertError(not this.valid, "destroy()", "thistype", this, "Double-free")
             debug set this.valid = false
-            call this.flush()
+            static if thistype.flush.exists then
+                call this.flush()
+            endif
             static if thistype.onDestruct.exists then
                 call this.onDestruct()
             endif
