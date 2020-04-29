@@ -48,7 +48,7 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
     /*
         - AGD (Author)
         - Bribe, Nestharus (SpellEffectEvent concept)
-		- Anitarf (Original SpellEvent Idea)
+        - Anitarf (Original SpellEvent Idea)
 
     */
     |=========|
@@ -62,14 +62,14 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
 
         Event Responses:
           */readonly static integer         ABILITY_ID      /*
-		  */readonly static integer         EVENT_TYPE      /*
-		  */readonly static integer         ORDER_TYPE      /*
+          */readonly static integer         EVENT_TYPE      /*
+          */readonly static integer         ORDER_TYPE      /*
           */readonly static integer         LEVEL           /*
           */readonly static player          TRIGGER_PLAYER  /*
           */readonly static unit            TRIGGER_UNIT    /*
           */readonly static unit            TARGET_UNIT     /*
-		  */readonly static item            TARGET_ITEM     /*
-		  */readonly static destructable    TARGET_DEST     /*
+          */readonly static item            TARGET_ITEM     /*
+          */readonly static destructable    TARGET_DEST     /*
           */readonly static real            TARGET_X        /*  Returns the x-coordinate of the caster if the spell is a 'No-target' ability
           */readonly static real            TARGET_Y        /*  Returns the y-coordinate of the caster if the spell is a 'No-target' ability
 
@@ -82,9 +82,9 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
           */static method   operator []                     takes integer spellId                                                           returns Spell/*
                 - Returns a Spell instance based on the given activation-ability rawcode which can be used for event handler registrations
 
-		  */method          setEventFlag                    takes integer eventType, boolean flag                                           returns nothing/*
-		  */method          getEventFlag                    takes integer eventType                                                         returns boolean/*
-				- Disables/Enables certain event types from running for a Spell (These flags are <true> by default)
+          */method          setEventFlag                    takes integer eventType, boolean flag                                           returns nothing/*
+          */method          getEventFlag                    takes integer eventType                                                         returns boolean/*
+                - Disables/Enables certain event types from running for a Spell (These flags are <true> by default)
 
           */method          executeNoTargetEvent            takes integer eventType, integer level, unit caster                             returns nothing/*
           */method          executePointTargetEvent         takes integer eventType, integer level, unit caster, real targetX, real targetY returns nothing/*
@@ -122,11 +122,11 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
       */constant integer EVENT_SPELL_ENDCAST/*
       */constant integer EVENT_SPELL_FINISH/*
 
-		Spell Order Types
+        Spell Order Types
 
-	  */constant integer SPELL_ORDER_TYPE_TARGET/*
-	  */constant integer SPELL_ORDER_TYPE_POINT/*
-	  */constant integer SPELL_ORDER_TYPE_IMMEDIATE/*
+      */constant integer SPELL_ORDER_TYPE_TARGET/*
+      */constant integer SPELL_ORDER_TYPE_POINT/*
+      */constant integer SPELL_ORDER_TYPE_IMMEDIATE/*
 
     */
     |===========|
@@ -137,8 +137,8 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
 
         (Event Responses)
       */constant function GetEventSpellAbilityId    takes nothing                                                   returns integer/*
-	  */constant function GetEventSpellEventType    takes nothing                                                   returns integer/*
-	  */constant function GetEventSpellOrderType    takes nothing                                                   returns integer/*
+      */constant function GetEventSpellEventType    takes nothing                                                   returns integer/*
+      */constant function GetEventSpellOrderType    takes nothing                                                   returns integer/*
       */constant function GetEventSpellLevel        takes nothing                                                   returns integer/*
       */constant function GetEventSpellUser         takes nothing                                                   returns player/*
       */constant function GetEventSpellCaster       takes nothing                                                   returns unit/*
@@ -148,8 +148,8 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
       */constant function GetEventSpellTargetX      takes nothing                                                   returns real/*
       */constant function GetEventSpellTargetY      takes nothing                                                   returns real/*
 
-	  */function SetSpellEventFlag                  takes integer abilId, integer eventType, boolean flag           returns nothing/*
-	  */function GetSpellEventFlag                  takes integer abilId, integer eventType                         returns boolean/*
+      */function SetSpellEventFlag                  takes integer abilId, integer eventType, boolean flag           returns nothing/*
+      */function GetSpellEventFlag                  takes integer abilId, integer eventType                         returns boolean/*
 
       */function SpellExecuteNoTargetEvent          takes integer abilId, integer eventType, integer level, unit caster                                returns nothing/*
       */function SpellExecutePointTargetEvent       takes integer abilId, integer eventType, integer level, unit caster, real targetX, real targetY    returns nothing/*
@@ -163,7 +163,7 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
       */function SpellUnregisterEventHandler        takes integer spellId, integer eventType, code handler          returns nothing/*
       */function SpellClearEventHandlers            takes integer spellId, integer eventType                        returns nothing/*
       */function SpellClearHandlers                 takes integer spellId                                           returns nothing/*
-	  
+
       */function SpellRegisterGenericEventHandler   takes integer eventType, code handler                           returns nothing/*
       */function SpellUnregisterGenericEventHandler takes integer eventType, code handler                           returns nothing/*
       */function SpellClearGenericEventHandlers     takes integer eventType                                         returns nothing/*
@@ -190,9 +190,9 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
                 - Readonly attribute is only effective outside the implementing struct, though
                   users are also not supposed to change these values from inside the struct
 
-		Public methods:
-		  */static method registerSpellEvent takes integer spellId, integer eventType returns nothing/*
-				- Manually registers a spell rawcode to trigger spell events
+        Public methods:
+          */static method registerSpellEvent takes integer spellId, integer eventType returns nothing/*
+                - Manually registers a spell rawcode to trigger spell events
                 - Can be used for spells that involves more than one abilityId
 
         Member interfaces:
@@ -220,9 +220,9 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
               the accuracy of the first 'tick' of the periodic operations. Here, you always
               need to manually allocate/deallocate you spell instances.
 
-		Public methods:
-		  */static method registerSpellEvent takes integer spellId, integer eventType returns nothing/*
-				- Manually registers a spell rawcode to trigger spell events
+        Public methods:
+          */static method registerSpellEvent takes integer spellId, integer eventType returns nothing/*
+                - Manually registers a spell rawcode to trigger spell events
                 - Can be used for spells that involves more than one abilityId
 
         Member interfaces:
@@ -270,9 +270,9 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         constant integer EVENT_SPELL_ENDCAST            = 0x8
         constant integer EVENT_SPELL_FINISH             = 0x10
 
-		constant integer SPELL_ORDER_TYPE_TARGET        = 0x12
-		constant integer SPELL_ORDER_TYPE_POINT         = 0x123
-		constant integer SPELL_ORDER_TYPE_IMMEDIATE     = 0x1234
+        constant integer SPELL_ORDER_TYPE_TARGET        = 0x12
+        constant integer SPELL_ORDER_TYPE_POINT         = 0x123
+        constant integer SPELL_ORDER_TYPE_IMMEDIATE     = 0x1234
     endglobals
 
     globals
@@ -285,11 +285,11 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         private real tempTargetY                        = 0.00
         private boolexpr bridgeExpr
 
-		private integer array eventType
+        private integer array eventType
         private integer array eventIndex
     endglobals
 
-	private keyword Init
+    private keyword Init
 
     static if DEBUG_MODE then
         private function IsValidEventType takes integer eventType returns boolean
@@ -376,28 +376,28 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
     *   Credits to MyPad for the allocation algorithm
     */
     private struct Node extends array
-		private static thistype array stack
-		static method allocate takes nothing returns thistype
-			local thistype node = stack[0]
-			if stack[node] == 0 then
+        private static thistype array stack
+        static method allocate takes nothing returns thistype
+            local thistype node = stack[0]
+            if stack[node] == 0 then
                 debug call AssertError(node == (JASS_MAX_ARRAY_SIZE - 1), "allocate()", "thistype", node, "Overflow")
-				set node = node + 1
-				set stack[0] = node
-			else
-				set stack[0] = stack[node]
-				set stack[node] = 0
-			endif
-			return node
-		endmethod
-		method deallocate takes nothing returns nothing
+                set node = node + 1
+                set stack[0] = node
+            else
+                set stack[0] = stack[node]
+                set stack[node] = 0
+            endif
+            return node
+        endmethod
+        method deallocate takes nothing returns nothing
             debug call AssertError(this == 0, "deallocate()", "thistype", 0, "Null node")
             debug call AssertError(stack[this] > 0, "deallocate()", "thistype", this, "Double-free")
-			set stack[this] = stack[0]
-			set stack[0] = this
-		endmethod
+            set stack[this] = stack[0]
+            set stack[0] = this
+        endmethod
     endstruct
 
-	private struct NodeList extends array
+    private struct NodeList extends array
 
         boolexpr expr
         readonly thistype prev
@@ -441,15 +441,15 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
             call this.deallocate()
         endmethod
 
-	endstruct
+    endstruct
 
-	private struct Handler extends array
+    private struct Handler extends array
 
-		readonly trigger trigger
+        readonly trigger trigger
 
         boolean overrideParams
         boolean disableBackExpr
-		private integer handlerCount
+        private integer handlerCount
         private integer index
         private static NodeList array genericList
 
@@ -476,10 +476,10 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         endmethod
 
         method updateHandlers takes nothing returns nothing
-			call TriggerClearConditions(this.trigger)
+            call TriggerClearConditions(this.trigger)
             call this.updateHandlerList(genericList[this.index])
             call this.updateHandlerList(this.list)
-		endmethod
+        endmethod
 
         static method bridge takes nothing returns boolean
             local integer triggerId = GetHandleId(GetTriggeringTrigger())
@@ -502,22 +502,22 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
             return node.list.next != node.list and node.overrideParams
         endmethod
 
-		static method create takes integer eventIndex returns thistype
-			local thistype node = NodeList.create()
+        static method create takes integer eventIndex returns thistype
+            local thistype node = NodeList.create()
             set node.index = eventIndex
-			set node.handlerCount = 0
-			return node
-		endmethod
-		method destroy takes nothing returns nothing
-			if this.handlerCount > 0 then
-				call DestroyTrigger(this.trigger)
-				set this.trigger = null
-				set this.handlerCount = 0
-			endif
+            set node.handlerCount = 0
+            return node
+        endmethod
+        method destroy takes nothing returns nothing
+            if this.handlerCount > 0 then
+                call DestroyTrigger(this.trigger)
+                set this.trigger = null
+                set this.handlerCount = 0
+            endif
             set this.index = 0
             call Hashtable.flushChild(this)
-			call this.list.destroy()
-		endmethod
+            call this.list.destroy()
+        endmethod
 
         static method registerGeneric takes integer eventIndex, boolexpr expr returns nothing
             local NodeList node = NodeList.allocate()
@@ -534,61 +534,61 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         endmethod
         static method clearGeneric takes integer eventIndex returns nothing
             local NodeList list = genericList[eventIndex]
-			local NodeList node = list.next
-			loop
-				exitwhen node == list.prev
+            local NodeList node = list.next
+            loop
+                exitwhen node == list.prev
                 set node.expr = null
-				call node.remove()
-				call node.deallocate()
-				set node = node.next
-			endloop
+                call node.remove()
+                call node.deallocate()
+                set node = node.next
+            endloop
             call Hashtable.flushChild(list)
         endmethod
 
         method register takes boolexpr expr returns nothing
             local integer exprId = GetHandleId(expr)
-			local NodeList node = NodeList.allocate()
-			if this.handlerCount == 0 then
-				set this.trigger = CreateTrigger()
+            local NodeList node = NodeList.allocate()
+            if this.handlerCount == 0 then
+                set this.trigger = CreateTrigger()
                 call Hashtable.save(0, GetHandleId(this.trigger), this)
                 call this.updateHandlers()
-			endif
-			set this.handlerCount = this.handlerCount + 1
-			set node.expr = expr
+            endif
+            set this.handlerCount = this.handlerCount + 1
+            set node.expr = expr
             call this.list.prev.insert(node)
             call Hashtable.save(this, -exprId, node)
             call Hashtable.saveTriggerCondition(this, exprId, TriggerAddCondition(this.trigger, expr))
-		endmethod
+        endmethod
         method unregister takes integer exprId returns nothing
             local NodeList node = Hashtable.load(this, -exprId)
-			set node.expr = null
-			call node.remove()
-			set this.handlerCount = this.handlerCount - 1
-			if this.handlerCount == 0 then
+            set node.expr = null
+            call node.remove()
+            set this.handlerCount = this.handlerCount - 1
+            if this.handlerCount == 0 then
                 call Hashtable.remove(0, GetHandleId(this.trigger))
                 call Hashtable.flushChild(this)
-				call DestroyTrigger(this.trigger)
-				set this.trigger = null
-			else
+                call DestroyTrigger(this.trigger)
+                set this.trigger = null
+            else
                 call TriggerRemoveCondition(this.trigger, Hashtable.loadTriggerCondition(this, exprId))
                 call Hashtable.remove(this, -exprId)
                 call Hashtable.removeHandle(this, exprId)
-			endif
-			call node.deallocate()
-		endmethod
+            endif
+            call node.deallocate()
+        endmethod
         method clear takes nothing returns nothing
-			local NodeList node = this.list.next
-			loop
-				exitwhen node == this.list
+            local NodeList node = this.list.next
+            loop
+                exitwhen node == this.list
                 call TriggerRemoveCondition(this.trigger, Hashtable.loadTriggerCondition(this, GetHandleId(node.expr)))
-				call node.remove()
-				call node.deallocate()
-				set node = node.next
-			endloop
+                call node.remove()
+                call node.deallocate()
+                set node = node.next
+            endloop
             call Hashtable.flushChild(this)
             call DestroyTrigger(this.trigger)
             set this.trigger = null
-		endmethod
+        endmethod
 
         debug static method hasGenericExpr takes integer eventIndex, boolexpr expr returns boolean
             debug return Hashtable.load(genericList[eventIndex], -GetHandleId(expr)) != 0
@@ -597,16 +597,16 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
             debug return Hashtable.load(this, -GetHandleId(expr)) != 0
         debug endmethod
 
-		method operator enabled= takes boolean flag returns nothing
-			if flag then
-				call EnableTrigger(this.trigger)
-			else
-				call DisableTrigger(this.trigger)
-			endif
-		endmethod
-		method operator enabled takes nothing returns boolean
-			return IsTriggerEnabled(this.trigger)
-		endmethod
+        method operator enabled= takes boolean flag returns nothing
+            if flag then
+                call EnableTrigger(this.trigger)
+            else
+                call DisableTrigger(this.trigger)
+            endif
+        endmethod
+        method operator enabled takes nothing returns boolean
+            return IsTriggerEnabled(this.trigger)
+        endmethod
 
         private static method initGenericList takes integer eventIndex returns nothing
             set genericList[eventIndex] = NodeList.create()
@@ -622,21 +622,21 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
             call initGenericList(eventIndex[EVENT_SPELL_FINISH])
         endmethod
 
-	endstruct
+    endstruct
 
     /*===================================================================================*/
 
     struct Spell extends array
 
         readonly static integer         ABILITY_ID      = 0
-		readonly static integer			EVENT_TYPE		= 0
-		readonly static integer			ORDER_TYPE		= 0
+        readonly static integer         EVENT_TYPE      = 0
+        readonly static integer         ORDER_TYPE      = 0
         readonly static integer         LEVEL           = 0
         readonly static player          TRIGGER_PLAYER  = null
         readonly static unit            TRIGGER_UNIT    = null
         readonly static unit            TARGET_UNIT     = null
-		readonly static item            TARGET_ITEM     = null
-		readonly static destructable    TARGET_DEST     = null
+        readonly static item            TARGET_ITEM     = null
+        readonly static destructable    TARGET_DEST     = null
         readonly static real            TARGET_X        = 0.00
         readonly static real            TARGET_Y        = 0.00
 
@@ -652,7 +652,7 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
 
         static method operator [] takes integer abilId returns thistype
             local thistype this = Hashtable.load(spellKey, abilId)
-			local integer offset
+            local integer offset
             if this == 0 then
                 debug call AssertError(spellCount > R2I(JASS_MAX_ARRAY_SIZE/5), "Spell[]", "thistype", 0, "Overflow")
                 static if LIBRARY_ResourcePreloader then
@@ -661,19 +661,19 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
                 set spellCount = spellCount + 1
                 set thistype(spellCount).abilityId = abilId
                 call Hashtable.save(spellKey, abilId, spellCount)
-				set offset = (spellCount - 1)*5
-				set eventHandler[offset + eventIndex[EVENT_SPELL_CAST]]     = Handler.create(eventIndex[EVENT_SPELL_CAST])
-				set eventHandler[offset + eventIndex[EVENT_SPELL_CHANNEL]]  = Handler.create(eventIndex[EVENT_SPELL_CHANNEL])
-				set eventHandler[offset + eventIndex[EVENT_SPELL_EFFECT]]   = Handler.create(eventIndex[EVENT_SPELL_EFFECT])
-				set eventHandler[offset + eventIndex[EVENT_SPELL_ENDCAST]]  = Handler.create(eventIndex[EVENT_SPELL_ENDCAST])
-				set eventHandler[offset + eventIndex[EVENT_SPELL_FINISH]]   = Handler.create(eventIndex[EVENT_SPELL_FINISH])
+                set offset = (spellCount - 1)*5
+                set eventHandler[offset + eventIndex[EVENT_SPELL_CAST]]     = Handler.create(eventIndex[EVENT_SPELL_CAST])
+                set eventHandler[offset + eventIndex[EVENT_SPELL_CHANNEL]]  = Handler.create(eventIndex[EVENT_SPELL_CHANNEL])
+                set eventHandler[offset + eventIndex[EVENT_SPELL_EFFECT]]   = Handler.create(eventIndex[EVENT_SPELL_EFFECT])
+                set eventHandler[offset + eventIndex[EVENT_SPELL_ENDCAST]]  = Handler.create(eventIndex[EVENT_SPELL_ENDCAST])
+                set eventHandler[offset + eventIndex[EVENT_SPELL_FINISH]]   = Handler.create(eventIndex[EVENT_SPELL_FINISH])
                 return spellCount
             endif
             return this
         endmethod
 
         static method registerGenericEventHandler takes integer eventType, code handler returns nothing
-			local boolexpr expr = Filter(handler)
+            local boolexpr expr = Filter(handler)
             local integer eventId = 0x10
             local integer node
             debug call AssertError(not IsValidEventType(eventType), "registerGenericEventHandler()", "thistype", 0, "Invalid Spell Event Type (" + I2S(eventType) + ")")
@@ -692,10 +692,10 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
                 endif
                 set eventId = eventId/2
             endloop
-			set expr = null
+            set expr = null
         endmethod
         static method unregisterGenericEventHandler takes integer eventType, code handler returns nothing
-			local boolexpr expr = Filter(handler)
+            local boolexpr expr = Filter(handler)
             local integer eventId = 0x10
             local integer node
             debug call AssertError(not IsValidEventType(eventType), "unregisterGenericEventHandler()", "thistype", 0, "Invalid Spell Event Type (" + I2S(eventType) + ")")
@@ -714,7 +714,7 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
                 endif
                 set eventId = eventId/2
             endloop
-			set expr = null
+            set expr = null
         endmethod
         static method clearGenericEventHandlers takes integer eventType returns nothing
             local integer eventId = 0x10
@@ -808,14 +808,14 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
             endif
         endmethod
 
-		method setEventFlag takes integer eventType, boolean flag returns nothing
+        method setEventFlag takes integer eventType, boolean flag returns nothing
             debug call AssertError(not IsEventSingleFlag(eventType), "setEventFlag()", "thistype", this, "Spell Event Type does not contain a single flag (" + I2S(eventType) + ")")
-			set eventHandler[(this - 1)*5 + eventIndex[eventType]].enabled = flag
-		endmethod
-		method getEventFlag takes integer eventType returns boolean
+            set eventHandler[(this - 1)*5 + eventIndex[eventType]].enabled = flag
+        endmethod
+        method getEventFlag takes integer eventType returns boolean
             debug call AssertError(not IsEventSingleFlag(eventType), "getEventFlag()", "thistype", this, "Spell Event Type does not contain a single flag (" + I2S(eventType) + ")")
-			return eventHandler[(this - 1)*5 + eventIndex[eventType]].enabled
-		endmethod
+            return eventHandler[(this - 1)*5 + eventIndex[eventType]].enabled
+        endmethod
 
         method operator handlersDisabled= takes boolean disabled returns nothing
             if Spell.ABILITY_ID != 0 then
@@ -831,7 +831,7 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
 
         private static method onOverrideParams takes nothing returns nothing
             if Handler.bridge() then
-                set ORDER_TYPE		= tempOrderType
+                set ORDER_TYPE      = tempOrderType
                 set LEVEL           = tempLevel
                 set TRIGGER_PLAYER  = GetOwningPlayer(tempTriggerUnit)
                 set TRIGGER_UNIT    = tempTriggerUnit
@@ -888,8 +888,8 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
             local boolean disableBackExpr       = eventHandler.disableBackExpr
             local boolean overrideParams        = eventHandler.overrideParams
             local integer prevId                = ABILITY_ID
-            local integer prevEventType			= EVENT_TYPE
-            local integer prevOrderType			= ORDER_TYPE
+            local integer prevEventType         = EVENT_TYPE
+            local integer prevOrderType         = ORDER_TYPE
             local integer prevLevel             = LEVEL
             local player prevTriggerPlayer      = TRIGGER_PLAYER
             local unit prevTriggerUnit          = TRIGGER_UNIT
@@ -1061,11 +1061,11 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
             set eventIndex[EVENT_SPELL_EFFECT]  = 3
             set eventIndex[EVENT_SPELL_ENDCAST] = 4
             set eventIndex[EVENT_SPELL_FINISH]  = 5
-			set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_CAST)]	= EVENT_SPELL_CAST
-			set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_CHANNEL)]	= EVENT_SPELL_CHANNEL
-			set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_EFFECT)]	= EVENT_SPELL_EFFECT
-			set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_ENDCAST)]	= EVENT_SPELL_ENDCAST
-			set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_FINISH)]	= EVENT_SPELL_FINISH
+            set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_CAST)]	= EVENT_SPELL_CAST
+            set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_CHANNEL)]	= EVENT_SPELL_CHANNEL
+            set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_EFFECT)]	= EVENT_SPELL_EFFECT
+            set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_ENDCAST)]	= EVENT_SPELL_ENDCAST
+            set eventType[GetHandleId(EVENT_PLAYER_UNIT_SPELL_FINISH)]	= EVENT_SPELL_FINISH
             call registerEvent(EVENT_PLAYER_UNIT_SPELL_CAST, function thistype.onSpellCast)
             call registerEvent(EVENT_PLAYER_UNIT_SPELL_CHANNEL, function thistype.onSpellChannel)
             call registerEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT, function thistype.onSpellEffect)
@@ -1076,27 +1076,27 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
 
     endstruct
 
-	private module Init
-		private static method onInit takes nothing returns nothing
+    private module Init
+        private static method onInit takes nothing returns nothing
             static if LIBRARY_Table then
                 call Hashtable.init()
             endif
-			call init()
+            call init()
             call Handler.init()
-		endmethod
-	endmodule
+        endmethod
+    endmodule
 
     /*===================================================================================*/
 
     constant function GetEventSpellAbilityId takes nothing returns integer
         return Spell.ABILITY_ID
     endfunction
-	constant function GetEventSpellEventType takes nothing returns integer
-		return Spell.EVENT_TYPE
-	endfunction
-	constant function GetEventSpellOrderType takes nothing returns integer
-		return Spell.ORDER_TYPE
-	endfunction
+    constant function GetEventSpellEventType takes nothing returns integer
+        return Spell.EVENT_TYPE
+    endfunction
+    constant function GetEventSpellOrderType takes nothing returns integer
+        return Spell.ORDER_TYPE
+    endfunction
     constant function GetEventSpellLevel takes nothing returns integer
         return Spell.LEVEL
     endfunction
@@ -1109,12 +1109,12 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
     constant function GetEventSpellTargetUnit takes nothing returns unit
         return Spell.TARGET_UNIT
     endfunction
-	constant function GetEventSpellTargetItem takes nothing returns item
-		return Spell.TARGET_ITEM
-	endfunction
-	constant function GetEventSpellTargetDest takes nothing returns destructable
-		return Spell.TARGET_DEST
-	endfunction
+    constant function GetEventSpellTargetItem takes nothing returns item
+        return Spell.TARGET_ITEM
+    endfunction
+    constant function GetEventSpellTargetDest takes nothing returns destructable
+        return Spell.TARGET_DEST
+    endfunction
     constant function GetEventSpellTargetX takes nothing returns real
         return Spell.TARGET_X
     endfunction
@@ -1122,14 +1122,14 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         return Spell.TARGET_Y
     endfunction
 
-	function SetSpellEventFlag takes integer abilId, integer eventType, boolean flag returns nothing
-		debug call AssertError(not IsEventSingleFlag(eventType), "SetSpellEventFlag()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
-		call Spell[abilId].setEventFlag(eventType, flag)
-	endfunction
-	function GetSpellEventFlag takes integer abilId, integer eventType returns boolean
-		debug call AssertError(not IsEventSingleFlag(eventType), "GetSpellEventFlag()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
-		return Spell[abilId].getEventFlag(eventType)
-	endfunction
+    function SetSpellEventFlag takes integer abilId, integer eventType, boolean flag returns nothing
+        debug call AssertError(not IsEventSingleFlag(eventType), "SetSpellEventFlag()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
+        call Spell[abilId].setEventFlag(eventType, flag)
+    endfunction
+    function GetSpellEventFlag takes integer abilId, integer eventType returns boolean
+        debug call AssertError(not IsEventSingleFlag(eventType), "GetSpellEventFlag()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
+        return Spell[abilId].getEventFlag(eventType)
+    endfunction
 
     function SpellExecuteNoTargetEvent takes integer abilId, integer eventType, integer level, unit caster returns nothing
         call Spell[abilId].executeNoTargetEvent(eventType, level, caster)
@@ -1152,11 +1152,11 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
     endfunction
 
     function SpellRegisterEventHandler takes integer abilId, integer eventType, code handler returns nothing
-		debug call AssertError(not IsValidEventType(eventType), "SpellRegisterEventHandler()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
+        debug call AssertError(not IsValidEventType(eventType), "SpellRegisterEventHandler()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
         call Spell[abilId].registerEventHandler(eventType, handler)
     endfunction
     function SpellUnregisterEventHandler takes integer abilId, integer eventType, code handler returns nothing
-		debug call AssertError(not IsValidEventType(eventType), "SpellUnregisterEventHandler()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
+        debug call AssertError(not IsValidEventType(eventType), "SpellUnregisterEventHandler()", "", 0, "Spell(" + I2S(abilId) + "): Invalid Spell Event Type (" + I2S(eventType) + ")")
         call Spell[abilId].unregisterEventHandler(eventType, handler)
     endfunction
     function SpellClearEventHandlers takes integer abilId, integer eventType returns nothing
@@ -1168,11 +1168,11 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
     endfunction
 
     function SpellRegisterGenericEventHandler takes integer eventType, code handler returns nothing
-		debug call AssertError(not IsValidEventType(eventType), "SpellRegisterGenericEventHandler()", "", 0, "Invalid Spell Event Type (" + I2S(eventType) + ")")
+        debug call AssertError(not IsValidEventType(eventType), "SpellRegisterGenericEventHandler()", "", 0, "Invalid Spell Event Type (" + I2S(eventType) + ")")
         call Spell.registerGenericEventHandler(eventType, handler)
     endfunction
     function SpellUnregisterGenericEventHandler takes integer eventType, code handler returns nothing
-		debug call AssertError(not IsValidEventType(eventType), "SpellUnregisterGenericEventHandler()", "", 0, "Invalid Spell Event Type (" + I2S(eventType) + ")")
+        debug call AssertError(not IsValidEventType(eventType), "SpellUnregisterGenericEventHandler()", "", 0, "Invalid Spell Event Type (" + I2S(eventType) + ")")
         call Spell.unregisterGenericEventHandler(eventType, handler)
     endfunction
     function SpellClearGenericEventHandlers takes integer eventType returns nothing
@@ -1190,21 +1190,21 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         call DestroyTimer(whichTimer)
     endfunction
 
-	private function OnSpellEventEx takes integer node, real period, code callback returns nothing
-		local timer periodicTimer
-		if node > 0 then
-			set periodicTimer = CreateTimer()
+    private function OnSpellEventEx takes integer node, real period, code callback returns nothing
+        local timer periodicTimer
+        if node > 0 then
+            set periodicTimer = CreateTimer()
             call Hashtable.save(0, GetHandleId(periodicTimer), node)
-			call TimerStart(periodicTimer, period, true, callback)
-			set periodicTimer = null
-		endif
-	endfunction
+            call TimerStart(periodicTimer, period, true, callback)
+            set periodicTimer = null
+        endif
+    endfunction
 
-	private function RegisterSpell takes integer spellId, integer eventType, code onSpellEvent returns nothing
-		if spellId != 0 then
-			call Spell[spellId].registerEventHandler(eventType, onSpellEvent)
-		endif
-	endfunction
+    private function RegisterSpell takes integer spellId, integer eventType, code onSpellEvent returns nothing
+        if spellId != 0 then
+            call Spell[spellId].registerEventHandler(eventType, onSpellEvent)
+        endif
+    endfunction
 
     module SpellEvent
 
@@ -1281,7 +1281,7 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         endmethod
 
         private static method onInit takes nothing returns nothing
-			call RegisterSpell(SPELL_ID, SPELL_EVENT_TYPE, function thistype.onSpellEvent)
+            call RegisterSpell(SPELL_ID, SPELL_EVENT_TYPE, function thistype.onSpellEvent)
         endmethod
 
         static method registerSpellEvent takes integer spellId, integer eventType returns nothing
@@ -1305,11 +1305,11 @@ library SpellEvent /* v1.4.1 https://www.hiveworkshop.com/threads/301895/
         endmethod
 
         private static method onSpellEvent takes nothing returns nothing
-			call OnSpellEventEx(onSpellStart(), SPELL_PERIOD, function thistype.onPeriodic)
+            call OnSpellEventEx(onSpellStart(), SPELL_PERIOD, function thistype.onPeriodic)
         endmethod
 
         private static method onInit takes nothing returns nothing
-			call RegisterSpell(SPELL_ID, SPELL_EVENT_TYPE, function thistype.onSpellEvent)
+            call RegisterSpell(SPELL_ID, SPELL_EVENT_TYPE, function thistype.onSpellEvent)
         endmethod
 
         static method registerSpellEvent takes integer spellId, integer eventType returns nothing
