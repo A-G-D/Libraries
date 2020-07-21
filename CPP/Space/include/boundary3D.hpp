@@ -166,7 +166,6 @@ namespace Boundary3D
 }
 
 #undef VEC
-#undef FLOAT
 
 #endif
 #pragma endregion
