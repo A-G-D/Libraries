@@ -2,96 +2,96 @@
 #ifndef __VECTOR3D_HPP__
 #define __VECTOR3D_HPP__
 
-#define __ Vector3D
+#define VEC Vector3D
 
 class Vector3D
 {
 public:
 
-    typename FLOAT double
+    typedef double FLOAT;
 
     struct Constants
     {
-        static __ &null() const;
+        static VEC &null();
 
-        static __ &i() const;
-        static __ &j() const;
-        static __ &k() const;
+        static VEC &i();
+        static VEC &j();
+        static VEC &k();
     };
 
-    static __ sum(__ const &v, __ const &w);
-    static __ difference(__ const &v, __ const &w);
+    static VEC sum(VEC const &v, VEC const &w);
+    static VEC difference(VEC const &v, VEC const &w);
 
-    static FLOAT scalar_product(__ const &v, __ const &w);
-    static FLOAT scalar_triple_product(__ const &u, __ const &v, __ const &w);
+    static FLOAT scalar_product(VEC const &v, VEC const &w);
+    static FLOAT scalar_triple_product(VEC const &u, VEC const &v, VEC const &w);
 
-    static __ vector_product(__ const &v, __ const &w);
-    static __ vector_triple_product(__ const &u, __ const &v, __ const &w);
+    static VEC vector_product(VEC const &v, VEC const &w);
+    static VEC vector_triple_product(VEC const &u, VEC const &v, VEC const &w);
 
-    static __ scaled(__ const &v, __ const &w);
-    static __ scaled(__ const &v, FLOAT a, FLOAT b, FLOAT c);
-    static __ scaled(__ const &v, FLOAT f);
+    static VEC scaled(VEC const &v, VEC const &w);
+    static VEC scaled(VEC const &v, FLOAT a, FLOAT b, FLOAT c);
+    static VEC scaled(VEC const &v, FLOAT f);
 
-    static __ normalized(__ const &v);
-    static __ inverted(__ const &v);
+    static VEC normalized(VEC const &v);
+    static VEC inverted(VEC const &v);
 
     FLOAT x;
     FLOAT y;
     FLOAT z;
 
-    __(FLOAT x, FLOAT y, FLOAT z);
-    __(__ const &v);
-    __();
-    ~__();
+    VEC(FLOAT x, FLOAT y, FLOAT z);
+    VEC(VEC const &v);
+    VEC();
+    ~VEC();
 
     FLOAT length() const;
     FLOAT square() const;
-    FLOAT dot(__ const &v) const;
-    FLOAT get_angle(__ const &v) const;
+    FLOAT dot(VEC const &v) const;
+    FLOAT get_angle(VEC const &v) const;
 
-    __ &update(__ const &v);
-    __ &update(FLOAT x, FLOAT y, FLOAT z);
+    VEC &update(VEC const &v);
+    VEC &update(FLOAT x, FLOAT y, FLOAT z);
 
-    __ &scale(__ const &v);
-    __ &scale(FLOAT f);
-    __ &scale(FLOAT a, FLOAT b, FLOAT c);
+    VEC &scale(VEC const &v);
+    VEC &scale(FLOAT f);
+    VEC &scale(FLOAT a, FLOAT b, FLOAT c);
 
-    __ &normalize();
+    VEC &normalize();
 
-    __ &add(__ const &v);
-    __ &subtract(__ const &v);
+    VEC &add(VEC const &v);
+    VEC &subtract(VEC const &v);
 
-    __ &cross(__ const &v);
+    VEC &cross(VEC const &v);
 
-    __ &project_to_vector(__ const &v);
-    __ &project_to_plane(__ const &n);
+    VEC &project_to_vector(VEC const &v);
+    VEC &project_to_plane(VEC const &n);
 
-    __ &rotate(__ const &axis, FLOAT rad);
-    __ &rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad);
+    VEC &rotate(VEC const &axis, FLOAT rad);
+    VEC &rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad);
 
-    __ &operator=(__ const &v);
+    VEC &operator=(VEC const &v);
 
-    __ &operator+=(__ const &v);
-    __ &operator-=(__ const &v);
-    __ &operator*=(__ const &v);
+    VEC &operator+=(VEC const &v);
+    VEC &operator-=(VEC const &v);
+    VEC &operator*=(VEC const &v);
 
-    __ &operator*=(FLOAT f);
-    __ &operator/=(FLOAT f);
+    VEC &operator*=(FLOAT f);
+    VEC &operator/=(FLOAT f);
 
-    __ operator+(__ const &v);
-    __ operator-(__ const &v);
-    __ operator*(__ const &v);
+    VEC operator+(VEC const &v) const;
+    VEC operator-(VEC const &v) const;
+    VEC operator*(VEC const &v) const;
 
-    __ operator*(FLOAT f);
-    __ operator/(FLOAT f);
+    VEC operator*(FLOAT f) const;
+    VEC operator/(FLOAT f) const;
 
-    __ operator-();
+    VEC operator-() const;
 
-    bool operator==(__ const &v) const;
-    bool operator!=(__ const &v) const;
+    bool operator==(VEC const &v) const;
+    bool operator!=(VEC const &v) const;
 };
 
-#undef __
+#undef VEC
 
 #endif
 #pragma endregion

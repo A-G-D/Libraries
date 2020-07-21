@@ -8,25 +8,11 @@
 
 namespace Boundary3D
 {
-    typename FLOAT double;
-
-    class Bounded
-    {
-        virtual bool is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const = 0;
-
-    public:
-
-        virtual FLOAT volume() const = 0;
-        virtual FLOAT surface_area() const = 0;
-
-        virtual bool contains(FLOAT x, FLOAT y, FLOAT z) const;
-    }
+    typedef double FLOAT;
 
     class Space
     {
-        typename __ Space;
-
-        unsigned short __state;
+        typedef Space __;
 
         void update(VEC *o = nullptr, VEC *x = nullptr, VEC *y = nullptr, VEC *z = nullptr, VEC *s = nullptr);
         void replace(VEC *o = nullptr, VEC *x = nullptr, VEC *y = nullptr, VEC *z = nullptr, VEC *s = nullptr);
@@ -40,6 +26,8 @@ namespace Boundary3D
             *__y,
             *__z,
             *__s;
+
+        unsigned short __state;
 
     public:
 
@@ -62,8 +50,8 @@ namespace Boundary3D
         virtual __ &rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad);
 
         virtual __ &scale(VEC const &v);
-        virtual __ &scale(FLOAT a, FLOAT b, FLOAT c);
         virtual __ &scale(FLOAT f);
+        virtual __ &scale(FLOAT a, FLOAT b, FLOAT c);
 
         virtual __ &operator=(__ const &space);
         virtual __ &operator=(__ &&space);
@@ -88,9 +76,21 @@ namespace Boundary3D
         virtual ~Space();
     };
 
-    class Ellipsoid : public Space, Bounded
+    class Bounded : public virtual Space
     {
-        typename __ Ellipsoid;
+        virtual bool is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const = 0;
+
+    public:
+
+        virtual FLOAT volume() const = 0;
+        virtual FLOAT surface_area() const = 0;
+
+        virtual bool contains(FLOAT x, FLOAT y, FLOAT z) const;
+    };
+
+    class Ellipsoid : public virtual Bounded, public virtual Space
+    {
+        typedef Ellipsoid __;
 
         virtual bool is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const override;
 
@@ -107,9 +107,9 @@ namespace Boundary3D
         Ellipsoid(__ &&ellipsoid);
     };
 
-    class Prism : public Space, Bounded
+    class Prism : public virtual Bounded, public virtual Space
     {
-        typename __ Prism;
+        typedef Prism __;
 
         virtual bool is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const override;
 
@@ -126,9 +126,9 @@ namespace Boundary3D
         Prism(__ &&prism);
     };
 
-    class Cone : public Space, Bounded
+    class Cone : public virtual Bounded, public virtual Space
     {
-        typename __ Cone;
+        typedef Cone __;
 
         virtual bool is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const override;
 
@@ -145,9 +145,9 @@ namespace Boundary3D
         Cone(__ &&cone);
     };
 
-    class Cylinder : public Space, Bounded
+    class Cylinder : public virtual Bounded, public virtual Space
     {
-        typename __ Cylinder;
+        typedef Cylinder __;
 
         virtual bool is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const override;
 

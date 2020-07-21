@@ -1,4 +1,5 @@
 #include "boundary3D.hpp"
+#include "vector3D.hpp"
 #include <cmath>
 
 using namespace Boundary3D;
@@ -8,19 +9,19 @@ using namespace Boundary3D;
 #define PI                  3.141592653589793238463
 #define THOMSEN_EXPONENT    1.6075
 
-constexpr double COEFFICIENT_ELLIPSOID_VOLUME           = (4./3.)*PI;
-constexpr double COEFFICIENT_ELLIPSOID_SURFACE_AREA     = (4.*PI)/pow(3., 1./THOMSEN_EXPONENT);
+const FLOAT COEFFICIENT_ELLIPSOID_VOLUME           = (4./3.)*PI;
+const FLOAT COEFFICIENT_ELLIPSOID_SURFACE_AREA     = (4.*PI)/pow(3., 1./THOMSEN_EXPONENT);
 
 enum
 {
     STATE_NORMAL,
     STATE_ROTATED,
     STATE_OBLIQUE
-}
+};
 
-double GetObliqueComponentLength(VEC *u, VEC *v, VEC *w, double dx, double dy, double dz)
+FLOAT GetObliqueComponentLength(VEC *u, VEC *v, VEC *w, FLOAT dx, FLOAT dy, FLOAT dz)
 {
-    double
+    FLOAT
         rx = v->x + w->x,
         ry = v->y + w->y,
         rz = v->z + w->z,
@@ -32,48 +33,49 @@ double GetObliqueComponentLength(VEC *u, VEC *v, VEC *w, double dx, double dy, d
 /*
 *   Bounded abstract class
 */
-bool __::Bounded::contains_point(FLOAT x, FLOAT y, FLOAT z)
+bool __::Bounded::contains(FLOAT x, FLOAT y, FLOAT z) const
 {
-    Space *space = static_cast<Space*>(this);
-
-    switch (space->__state)
+    switch (this->__state)
     {
         case STATE_NORMAL:
             return this->is_point_inside
             (
-                x - space->__o->x,
-                y - space->__o->y,
-                z - space->__o->z,
-                space->__s
+                x - this->__o->x,
+                y - this->__o->y,
+                z - this->__o->z,
+                this->__s
             );
 
         case STATE_ROTATED:
+        {
             FLOAT
-                dx = x - space->__o->x,
-                dy = y - space->__o->y,
-                dz = z - space->__o->z;
+                dx = x - this->__o->x,
+                dy = y - this->__o->y,
+                dz = z - this->__o->z;
 
             return this->is_point_inside
             (
-                dx*space->__x->x + dy*space->__x->y + dz*space->__x->z,
-                dx*space->__y->x + dy*space->__y->y + dz*space->__y->z,
-                dx*space->__z->x + dy*space->__z->y + dz*space->__z->z,
-                space->__s
+                dx*this->__x->x + dy*this->__x->y + dz*this->__x->z,
+                dx*this->__y->x + dy*this->__y->y + dz*this->__y->z,
+                dx*this->__z->x + dy*this->__z->y + dz*this->__z->z,
+                this->__s
             );
-
+        }
         case STATE_OBLIQUE:
+        {
             FLOAT
-                dx = x - space->__o->x,
-                dy = y - space->__o->y,
-                dz = z - space->__o->z;
+                dx = x - this->__o->x,
+                dy = y - this->__o->y,
+                dz = z - this->__o->z;
 
             return this->is_point_inside
             (
-                GetObliqueComponentLength(space->__x, space->__y, space->__z, dx, dy, dz),
-                GetObliqueComponentLength(space->__y, space->__x, space->__z, dx, dy, dz),
-                GetObliqueComponentLength(space->__z, space->__x, space->__y, dx, dy, dz),
-                space->__s
+                GetObliqueComponentLength(this->__x, this->__y, this->__z, dx, dy, dz),
+                GetObliqueComponentLength(this->__y, this->__x, this->__z, dx, dy, dz),
+                GetObliqueComponentLength(this->__z, this->__x, this->__y, dx, dy, dz),
+                this->__s
             );
+        }
     }
 
     return false;
@@ -123,23 +125,23 @@ void __::Space::update_state()
         this->__state = STATE_NORMAL;
 }
 
-inline VEC &__::Space::o()
+inline VEC &__::Space::o() const
 {
     return *this->__o;
 }
-inline VEC &__::Space::x()
+inline VEC &__::Space::x() const
 {
     return *this->__y;
 }
-inline VEC &__::Space::y()
+inline VEC &__::Space::y() const
 {
     return *this->__y;
 }
-inline VEC &__::Space::z()
+inline VEC &__::Space::z() const
 {
     return *this->__z;
 }
-inline VEC &__::Space::s()
+inline VEC &__::Space::s() const
 {
     return *this->__s;
 }
@@ -180,9 +182,9 @@ Space &__::Space::orient(FLOAT xi, FLOAT xj, FLOAT xk, FLOAT yi, FLOAT yj, FLOAT
 
     this->__s->scale(rx, ry, rz);
 
-    this->__x /= rx;
-    this->__y /= ry;
-    this->__z /= rz;
+    this->x() /= rx;
+    this->y() /= ry;
+    this->z() /= rz;
 
     this->update_state();
 
@@ -199,20 +201,21 @@ Space &__::Space::rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad)
     this->__y->rotate(i, j, k, rad);
     this->__z->rotate(i, j, k, rad);
 
-    return this->orient(this->__x, this->__y, this->__z);
+    return this->orient(this->x(), this->y(), this->z());
 }
 
 inline Space &__::Space::scale(VEC const &v)
 {
-    return this->__s->scale(v);
-}
-inline Space &__::Space::scale(FLOAT a, FLOAT b, FLOAT c)
-{
-    return this->__s->scale(a, b, c);
+    return this->scale(v.x, v.y, v.z);
 }
 inline Space &__::Space::scale(FLOAT f)
 {
-    return this->__s->scale(f);
+    return this->scale(f, f, f);
+}
+Space &__::Space::scale(FLOAT a, FLOAT b, FLOAT c)
+{
+    this->__s->scale(a, b, c);
+    return *this;
 }
 
 Space &__::Space::operator=(Space const &space)
@@ -268,7 +271,7 @@ __::Space::Space
     FLOAT zi, FLOAT zj, FLOAT zk,
     FLOAT a, FLOAT b, FLOAT c
 )
-    : __o(new VEC(ox, oy, oz)), __x(new VEC(xi, xj, xk)), __y(new VEC(yi, yj, yk)), __z(new VEC(zi, zj, zk)), __o(new VEC(a, b, c))
+    : __o(new VEC(ox, oy, oz)), __x(new VEC(xi, xj, xk)), __y(new VEC(yi, yj, yk)), __z(new VEC(zi, zj, zk)), __s(new VEC(a, b, c))
 {
     this->update_state();
 }
@@ -300,7 +303,7 @@ __::Space::Space()
 }
 __::Space::~Space()
 {
-    if this->o != nullptr
+    if (this->__o != nullptr)
         this->replace(nullptr);
 }
 
@@ -308,16 +311,16 @@ __::Space::~Space()
 *   Ellipsoid class definition
 */
 
-inline bool __::Ellipsoid::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s)
+inline bool __::Ellipsoid::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const
 {
     return (dx*dx)/(s->x*s->x) + (dy*dy)/(s->y*s->y) + (dz*dz)/(s->z*s->z) <= 1.;
 }
 
-inline FLOAT __::Ellipsoid::volume()
+inline FLOAT __::Ellipsoid::volume() const
 {
     return COEFFICIENT_ELLIPSOID_VOLUME*(this->__s->x*this->__s->y*this->__s->z);
 }
-FLOAT __::Ellipsoid::surface_area()
+FLOAT __::Ellipsoid::surface_area() const
 {
     FLOAT
         ap = pow(this->__s->x, THOMSEN_EXPONENT),
@@ -327,9 +330,9 @@ FLOAT __::Ellipsoid::surface_area()
     return COEFFICIENT_ELLIPSOID_SURFACE_AREA*pow(ap*bp + ap*cp + bp*cp, 1./THOMSEN_EXPONENT);
 }
 
-inline bool __::Ellipsoid::contains(VEC const &v)
+inline bool __::Ellipsoid::contains(VEC const &v) const
 {
-    return this->contains(v.x, v.y, v.z);
+    return this->Bounded::contains(v.x, v.y, v.z);
 }
 
 __::Ellipsoid::Ellipsoid(Ellipsoid const &ellipsoid)
@@ -345,23 +348,23 @@ __::Ellipsoid::Ellipsoid(Ellipsoid &&ellipsoid)
 *   Prism class definition
 */
 
-inline bool __::Prism::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s)
+inline bool __::Prism::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const
 {
     return dx*dx <= s->x*s->x && dy*dy <= s->y*s->y && dz*dz <= s->z*s->z;
 }
 
-inline FLOAT __::Prism::volume()
+inline FLOAT __::Prism::volume() const
 {
     return 8.*(this->__s->x*this->__s->y*this->__s->z);
 }
-inline FLOAT __::Prism::surface_area()
+inline FLOAT __::Prism::surface_area() const
 {
     return 8.*(this->__s->x*this->__s->y + this->__s->x*this->__s->z + this->__s->y*this->__s->z);
 }
 
-inline bool __::Prism::contains(VEC const &v)
+inline bool __::Prism::contains(VEC const &v) const
 {
-    return this->contains(v.x, v.y, v.z);
+    return this->Bounded::contains(v.x, v.y, v.z);
 }
 
 __::Prism::Prism(Prism const &prism)
@@ -377,26 +380,26 @@ __::Prism::Prism(Prism &&prism)
 *   Cone class definition
 */
 
-bool __::Cone::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s)
+bool __::Cone::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const
 {
     FLOAT rf = 1. - dz/s->z;
     return
-        rf >= 0. && r <= 1. &&
+        rf >= 0. && rf <= 1. &&
         (dx*dx)/(s->x*s->x) + (dy*dy)/(s->y*s->y) <= rf*rf;
 }
 
-inline FLOAT __::Cone::volume()
+inline FLOAT __::Cone::volume() const
 {
     return (PI/3.)*(this->__s->x*this->__s->y*this->__s->z);
 }
-inline FLOAT __::Cone::surface_area()
+inline FLOAT __::Cone::surface_area() const
 {
     return (0.5*PI)*(3.*(this->__s->x + this->__s->y) - sqrt((3.*this->__s->x + this->__s->y)*(this->__s->x + 3.*this->__s->y)))*this->__s->z;
 }
 
-inline bool __::Cone::contains(VEC const &v)
+inline bool __::Cone::contains(VEC const &v) const
 {
-    return this->contains(v.x, v.y, v.z);
+    return this->Bounded::contains(v.x, v.y, v.z);
 }
 
 __::Cone::Cone(Cone const &cone)
@@ -412,25 +415,25 @@ __::Cone::Cone(Cone &&cone)
 *   Cylinder class definition
 */
 
-inline bool __::Cylinder::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s)
+inline bool __::Cylinder::is_point_inside(FLOAT dx, FLOAT dy, FLOAT dz, VEC *s) const
 {
     return
         dz >= 0. && dz <= s->z &&
         (dx*dx)/(s->x*s->x) + (dy*dy)/(s->y*s->y) <= 1.;
 }
 
-inline FLOAT __::Cylinder::volume()
+inline FLOAT __::Cylinder::volume() const
 {
     return PI*(this->__s->x*this->__s->y*this->__s->z);
 }
-inline FLOAT __::Cylinder::surface_area()
+inline FLOAT __::Cylinder::surface_area() const
 {
     return PI*(3.*(this->__s->x + this->__s->y) - sqrt((3.*this->__s->x + this->__s->y)*(this->__s->x + 3.*this->__s->y)))*this->__s->z;
 }
 
-inline bool __::Cylinder::contains(VEC const &v)
+inline bool __::Cylinder::contains(VEC const &v) const
 {
-    return this->contains(v.x, v.y, v.z);
+    return this->Bounded::contains(v.x, v.y, v.z);
 }
 
 __::Cylinder::Cylinder(Cylinder const &cylinder)
@@ -438,6 +441,6 @@ __::Cylinder::Cylinder(Cylinder const &cylinder)
 {
 }
 __::Cylinder::Cylinder(Cylinder &&cylinder)
-    : Space(cylinder)
+    : Cylinder::Space(cylinder)
 {
 }
