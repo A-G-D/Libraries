@@ -1,97 +1,98 @@
 #pragma once
-#ifndef __VECTOR3D_HPP__
-#define __VECTOR3D_HPP__
+#ifndef __AGD__SPACE__VECTOR3D_HPP__
+#define __AGD__SPACE__VECTOR3D_HPP__
 
-#define VEC Vector3D
+#include "space.hpp"
 
-class Vector3D
+namespace Space
 {
-public:
-
-    typedef double FLOAT;
-
-    struct Constants
+    #define __ Vector3D
+    class __
     {
-        static VEC &null();
+    public:
 
-        static VEC &i();
-        static VEC &j();
-        static VEC &k();
+        struct Constants
+        {
+            static __ &null();
+
+            static __ &i();
+            static __ &j();
+            static __ &k();
+        };
+
+        static __ sum(__ const &v, __ const &w);
+        static __ difference(__ const &v, __ const &w);
+
+        static FLOAT scalar_product(__ const &v, __ const &w);
+        static FLOAT scalar_triple_product(__ const &u, __ const &v, __ const &w);
+
+        static __ vector_product(__ const &v, __ const &w);
+        static __ vector_triple_product(__ const &u, __ const &v, __ const &w);
+
+        static __ scaled(__ const &v, __ const &w);
+        static __ scaled(__ const &v, FLOAT a, FLOAT b, FLOAT c);
+        static __ scaled(__ const &v, FLOAT f);
+
+        static __ normalized(__ const &v);
+        static __ inverted(__ const &v);
+
+        FLOAT x;
+        FLOAT y;
+        FLOAT z;
+
+        Vector3D(FLOAT x, FLOAT y, FLOAT z);
+        Vector3D(__ const &v);
+        Vector3D();
+        ~Vector3D();
+
+        FLOAT length() const;
+        FLOAT square() const;
+        FLOAT dot(__ const &v) const;
+        FLOAT get_angle(__ const &v) const;
+
+        __ &update(FLOAT x, FLOAT y, FLOAT z);
+        __ &update(__ const &v);
+
+        __ &scale(FLOAT f);
+        __ &scale(FLOAT a, FLOAT b, FLOAT c);
+        __ &scale(__ const &v);
+
+        __ &normalize();
+
+        __ &add(__ const &v);
+        __ &subtract(__ const &v);
+
+        __ &cross(__ const &v);
+
+        __ &project_to_vector(__ const &v);
+        __ &project_to_plane(__ const &n);
+
+        __ &rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad);
+        __ &rotate(__ const &axis, FLOAT rad);
+
+        __ &operator=(__ const &v);
+
+        __ &operator+=(__ const &v);
+        __ &operator-=(__ const &v);
+        __ &operator*=(__ const &v);
+
+        __ &operator*=(FLOAT f);
+        __ &operator/=(FLOAT f);
+
+        __ operator+(__ const &v) const;
+        __ operator-(__ const &v) const;
+        __ operator*(__ const &v) const;
+
+        __ operator*(FLOAT f) const;
+        __ operator/(FLOAT f) const;
+
+        __ operator-() const;
+
+        bool operator==(__ const &v) const;
+        bool operator!=(__ const &v) const;
     };
-
-    static VEC sum(VEC const &v, VEC const &w);
-    static VEC difference(VEC const &v, VEC const &w);
-
-    static FLOAT scalar_product(VEC const &v, VEC const &w);
-    static FLOAT scalar_triple_product(VEC const &u, VEC const &v, VEC const &w);
-
-    static VEC vector_product(VEC const &v, VEC const &w);
-    static VEC vector_triple_product(VEC const &u, VEC const &v, VEC const &w);
-
-    static VEC scaled(VEC const &v, VEC const &w);
-    static VEC scaled(VEC const &v, FLOAT a, FLOAT b, FLOAT c);
-    static VEC scaled(VEC const &v, FLOAT f);
-
-    static VEC normalized(VEC const &v);
-    static VEC inverted(VEC const &v);
-
-    FLOAT x;
-    FLOAT y;
-    FLOAT z;
-
-    VEC(FLOAT x, FLOAT y, FLOAT z);
-    VEC(VEC const &v);
-    VEC();
-    ~VEC();
-
-    FLOAT length() const;
-    FLOAT square() const;
-    FLOAT dot(VEC const &v) const;
-    FLOAT get_angle(VEC const &v) const;
-
-    VEC &update(VEC const &v);
-    VEC &update(FLOAT x, FLOAT y, FLOAT z);
-
-    VEC &scale(VEC const &v);
-    VEC &scale(FLOAT f);
-    VEC &scale(FLOAT a, FLOAT b, FLOAT c);
-
-    VEC &normalize();
-
-    VEC &add(VEC const &v);
-    VEC &subtract(VEC const &v);
-
-    VEC &cross(VEC const &v);
-
-    VEC &project_to_vector(VEC const &v);
-    VEC &project_to_plane(VEC const &n);
-
-    VEC &rotate(VEC const &axis, FLOAT rad);
-    VEC &rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad);
-
-    VEC &operator=(VEC const &v);
-
-    VEC &operator+=(VEC const &v);
-    VEC &operator-=(VEC const &v);
-    VEC &operator*=(VEC const &v);
-
-    VEC &operator*=(FLOAT f);
-    VEC &operator/=(FLOAT f);
-
-    VEC operator+(VEC const &v) const;
-    VEC operator-(VEC const &v) const;
-    VEC operator*(VEC const &v) const;
-
-    VEC operator*(FLOAT f) const;
-    VEC operator/(FLOAT f) const;
-
-    VEC operator-() const;
-
-    bool operator==(VEC const &v) const;
-    bool operator!=(VEC const &v) const;
-};
-
-#undef VEC
+    #undef __
+}
 
 #endif
 #pragma endregion

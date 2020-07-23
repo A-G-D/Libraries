@@ -1,31 +1,34 @@
-#include "vector3D.hpp"
 #include <cmath>
+#include <stdexcept>
+#include "vector3D.hpp"
 
-#define VEC Vector3D
+using namespace Space;
+
+#define __ Vector3D
 
 /*
 *   Constant vectors
 */
 
-VEC &VEC::Constants::null()
+__ &__::Constants::null()
 {
-    static VEC zero;
+    static __ zero;
     return zero;
 }
 
-VEC &VEC::Constants::i()
+__ &__::Constants::i()
 {
-    static VEC i(1.00, 0.00, 0.00);
+    static __ i(1.00, 0.00, 0.00);
     return i;
 }
-VEC &VEC::Constants::j()
+__ &__::Constants::j()
 {
-    static VEC j(0.00, 1.00, 0.00);
+    static __ j(0.00, 1.00, 0.00);
     return j;
 }
-VEC &VEC::Constants::k()
+__ &__::Constants::k()
 {
-    static VEC k(0.00, 0.00, 1.00);
+    static __ k(0.00, 0.00, 1.00);
     return k;
 }
 
@@ -33,51 +36,56 @@ VEC &VEC::Constants::k()
 *   Static members
 */
 
-inline VEC VEC::sum(VEC const &v, VEC const &w)
+inline __ __::sum(__ const &v, __ const &w)
 {
     return v + w;
 }
-inline VEC VEC::difference(VEC const &v, VEC const &w)
+inline __ __::difference(__ const &v, __ const &w)
 {
     return v - w;
 }
 
-inline VEC::FLOAT VEC::scalar_product(VEC const &v, VEC const &w)
+inline FLOAT __::scalar_product(__ const &v, __ const &w)
 {
     return v.dot(w);
 }
-inline VEC::FLOAT VEC::scalar_triple_product(VEC const &u, VEC const &v, VEC const &w)
+inline FLOAT __::scalar_triple_product(__ const &u, __ const &v, __ const &w)
 {
     return vector_product(u, v).dot(w);
 }
 
-inline VEC VEC::vector_product(VEC const &v, VEC const &w)
+inline __ __::vector_product(__ const &v, __ const &w)
 {
     return v*w;
 }
-inline VEC VEC::vector_triple_product(VEC const &u, VEC const &v, VEC const &w)
+inline __ __::vector_triple_product(__ const &u, __ const &v, __ const &w)
 {
     return scaled(v, scalar_product(u, w)).subtract(scaled(w, scalar_product(u, v)));
 }
 
-inline VEC VEC::scaled(VEC const &v, VEC const &w)
+inline __ __::scaled(__ const &v, __ const &w)
 {
-    return VEC(v.x*w.x, v.y*w.y, v.z*w.z);
+    return __(v.x*w.x, v.y*w.y, v.z*w.z);
 }
-inline VEC VEC::scaled(VEC const &v, FLOAT a, FLOAT b, FLOAT c)
+inline __ __::scaled(__ const &v, FLOAT a, FLOAT b, FLOAT c)
 {
-    return VEC(v.x*a, v.y*b, v.z*c);
+    return __(v.x*a, v.y*b, v.z*c);
 }
-inline VEC VEC::scaled(VEC const &v, FLOAT f)
+inline __ __::scaled(__ const &v, FLOAT f)
 {
     return v*f;
 }
 
-inline VEC VEC::normalized(VEC const &v)
+inline __ __::normalized(__ const &v)
 {
-    return scaled(v, 1./v.length());
+    FLOAT l = v.length();
+
+    if (l == 0.)
+        throw std::runtime_error("Attempted to operate on null vector");
+
+    return scaled(v, 1./l);
 }
-inline VEC VEC::inverted(VEC const &v)
+inline __ __::inverted(__ const &v)
 {
     return -v;
 }
@@ -86,100 +94,120 @@ inline VEC VEC::inverted(VEC const &v)
 *   Instance members
 */
 
-VEC::VEC(FLOAT x, FLOAT y, FLOAT z)
+__::__(FLOAT x, FLOAT y, FLOAT z)
     : x(x), y(y), z(z)
 {
 }
-VEC::VEC(VEC const &v)
+__::__(__ const &v)
     : x(v.x), y(v.y), z(v.z)
 {
 }
-VEC::VEC()
+__::__()
     : x(0.00), y(0.00), z(0.00)
 {
 }
-VEC::~VEC()
+__::~__()
 {
 }
 
-inline VEC::FLOAT VEC::length() const
+inline FLOAT __::length() const
 {
     return sqrt(this->square());
 }
-inline VEC::FLOAT VEC::square() const
+inline FLOAT __::square() const
 {
     return this->x*this->x + this->y*this->y + this->z*this->z;
 }
-inline VEC::FLOAT VEC::dot(VEC const &v) const
+inline FLOAT __::dot(__ const &v) const
 {
     return this->x*v.x + this->y*v.y + this->z*v.z;
 }
-inline VEC::FLOAT VEC::get_angle(VEC const &v) const
+inline FLOAT __::get_angle(__ const &v) const
 {
+    if (this->length() == 0. || v.length() == 0.)
+        throw std::runtime_error("Division by zero caused by null vectors");
+
     return acos(this->dot(v)/(this->length()*v.length()));
 }
 
-inline VEC &VEC::update(VEC const &v)
-{
-    this->update(v.x, v.y, v.z);
-}
-VEC &VEC::update(FLOAT x, FLOAT y, FLOAT z)
+__ &__::update(FLOAT x, FLOAT y, FLOAT z)
 {
     this->x = x;
     this->y = y;
     this->z = z;
     return *this;
 }
-inline VEC &VEC::scale(FLOAT f)
+inline __ &__::update(__ const &v)
+{
+    this->update(v.x, v.y, v.z);
+}
+
+inline __ &__::scale(FLOAT f)
 {
     return this->update(this->x*f, this->y*f, this->z*f);
 }
-inline VEC &VEC::scale(FLOAT a, FLOAT b, FLOAT c)
+inline __ &__::scale(FLOAT a, FLOAT b, FLOAT c)
 {
     return this->update(this->x*a, this->y*b, this->z*c);
 }
-inline VEC &VEC::scale(VEC const &v)
+inline __ &__::scale(__ const &v)
 {
     return this->update(this->x*v.x, this->y*v.y, this->z*v.z);
 }
-inline VEC &VEC::normalize()
+
+inline __ &__::normalize()
 {
-    return this->scale(1./this->length());
+    FLOAT l = this->length();
+    
+    if (l == 0.)
+        throw std::runtime_error("Division by zero");
+
+    return this->scale(1./l);
 }
 
-inline VEC &VEC::add(VEC const &v)
+inline __ &__::add(__ const &v)
 {
     return this->update(this->x + v.x, this->y + v.y, this->z + v.z);
 }
-inline VEC &VEC::subtract(VEC const &v)
+inline __ &__::subtract(__ const &v)
 {
     return this->update(this->x - v.x, this->y - v.y, this->z - v.z);
 }
 
-inline VEC &VEC::cross(VEC const &v)
+inline __ &__::cross(__ const &v)
 {
     return this->update(this->y*v.z - this->z*v.y, this->z*v.x - this->x*v.z, this->x*v.y - this->y*v.x);
 }
 
-VEC &VEC::project_to_vector(VEC const &v)
+__ &__::project_to_vector(__ const &v)
 {
-    FLOAT l = this->dot(v)/v.square();
+    FLOAT square = v.square();
+
+    if (square == 0.)
+        throw std::runtime_error("Division by zero");
+
+    FLOAT l = this->dot(v)/square;
     return this->update(l*v.x, l*v.y, l*v.z);
 }
-VEC &VEC::project_to_plane(VEC const &n)
+__ &__::project_to_plane(__ const &n)
 {
-    FLOAT l = this->dot(n)/n.square();
+    FLOAT square = n.square();
+
+    if (square == 0.)
+        throw std::runtime_error("Division by zero");
+
+    FLOAT l = this->dot(n)/square;
     return this->update(this->x - l*n.x, this->y - l*n.y, this->z - l*n.z);
 }
 
-inline VEC &VEC::rotate(VEC const &axis, FLOAT rad)
+__ &__::rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad)
 {
-    return this->rotate(axis.x, axis.y, axis.z, rad);
-}
-VEC &VEC::rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad)
-{
+    FLOAT al    = i*i + j*j + k*k;
+
+    if (al == 0.)
+        throw std::runtime_error("Division by zero");
+
     FLOAT
-        al      = i*i + j*j + k*k,
         factor  = (this->x*i + this->y*j + this->z*k)/al,
         zx      = i*factor,
         zy      = j*factor,
@@ -198,66 +226,76 @@ VEC &VEC::rotate(FLOAT i, FLOAT j, FLOAT k, FLOAT rad)
         xz*cosine + ((i*xy - j*xx)/al)*sine + zz
     );
 }
+inline __ &__::rotate(__ const &axis, FLOAT rad)
+{
+    return this->rotate(axis.x, axis.y, axis.z, rad);
+}
 
-inline VEC &VEC::operator=(VEC const &v)
+inline __ &__::operator=(__ const &v)
 {
     return this->update(v.x, v.y, v.z);
 }
 
-inline VEC &VEC::operator+=(VEC const &v)
+inline __ &__::operator+=(__ const &v)
 {
     return this->add(v);
 }
-inline VEC &VEC::operator-=(VEC const &v)
+inline __ &__::operator-=(__ const &v)
 {
     return this->subtract(v);
 }
-inline VEC &VEC::operator*=(VEC const &v)
+inline __ &__::operator*=(__ const &v)
 {
     return this->cross(v);
 }
 
-inline VEC &VEC::operator*=(FLOAT f)
+inline __ &__::operator*=(FLOAT f)
 {
     return this->scale(f);
 }
-inline VEC &VEC::operator/=(FLOAT f)
+inline __ &__::operator/=(FLOAT f)
 {
+    if (f == 0.)
+        throw std::runtime_error("Division by zero");
+
     return this->scale(1./f);
 }
 
-inline VEC VEC::operator+(VEC const &v) const
+inline __ __::operator+(__ const &v) const
 {
-    return VEC(this->x + v.x, this->y + v.y, this->z + v.z);
+    return __(this->x + v.x, this->y + v.y, this->z + v.z);
 }
-inline VEC VEC::operator-(VEC const &v) const
+inline __ __::operator-(__ const &v) const
 {
-    return VEC(this->x - v.x, this->y - v.y, this->z - v.z);
+    return __(this->x - v.x, this->y - v.y, this->z - v.z);
 }
-inline VEC VEC::operator*(VEC const &v) const
+inline __ __::operator*(__ const &v) const
 {
-    return VEC(this->y*v.z - this->z*v.y, this->z*v.x - this->x*v.z, this->x*v.y - this->y*v.x);
-}
-
-inline VEC VEC::operator*(FLOAT f) const
-{
-    return VEC(this->x*f, this->y*f, this->z*f);
-}
-inline VEC VEC::operator/(FLOAT f) const
-{
-    return VEC(this->x/f, this->y/f, this->z/f);
+    return __(this->y*v.z - this->z*v.y, this->z*v.x - this->x*v.z, this->x*v.y - this->y*v.x);
 }
 
-inline VEC VEC::operator-() const
+inline __ __::operator*(FLOAT f) const
 {
-    return VEC(-(this->x), -(this->y), -(this->z));
+    return __(this->x*f, this->y*f, this->z*f);
+}
+inline __ __::operator/(FLOAT f) const
+{
+    if (f == 0.)
+        throw std::runtime_error("Division by zero");
+
+    return __(this->x/f, this->y/f, this->z/f);
 }
 
-inline bool VEC::operator==(VEC const &v) const
+inline __ __::operator-() const
+{
+    return __(-(this->x), -(this->y), -(this->z));
+}
+
+inline bool __::operator==(__ const &v) const
 {
     return this->x == v.x && this->y == v.y && this->z == v.z;
 }
-inline bool VEC::operator!=(VEC const &v) const
+inline bool __::operator!=(__ const &v) const
 {
     return this->x != v.x || this->y != v.y || this->z != v.z;
 }
